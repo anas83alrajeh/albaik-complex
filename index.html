@@ -160,7 +160,6 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .ic .lb{font-size:11px;color:var(--text-3);margin-bottom:3px}
 .ic .vl{font-size:14px;font-weight:700}
 .ic.hl .vl{color:var(--gold)}
-/* PRICE CALCULATOR — user side */
 .calc-box{background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r);padding:16px;margin-bottom:14px}
 .calc-box h3{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:12px;
   display:flex;align-items:center;gap:6px}
@@ -176,7 +175,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .calc-result .lbl{font-size:12px;color:var(--text-2)}
 .calc-result .price{font-size:22px;font-weight:700;color:var(--gold)}
 .calc-saving{font-size:11px;color:var(--green);margin-top:6px;min-height:16px;text-align:center}
-.dm-btns{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+.dm-btns{display:flex;gap:9px;margin-top:14px}
 .dm-btns .b-close{flex:1;padding:10px;border-radius:var(--r);border:1px solid var(--bd2);
   background:none;color:var(--text-2);font-size:13px;transition:all .15s}
 .dm-btns .b-close:hover{border-color:var(--gold);color:var(--gold)}
@@ -188,8 +187,8 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 /* ═══ SETTINGS MODAL ═══ */
 .sm-tabs{display:flex;gap:4px;background:var(--navy);padding:4px;
   border-radius:var(--r);border:1px solid var(--bd);margin-bottom:18px;flex-wrap:wrap}
-.sm-tab{flex:1;padding:7px 6px;border-radius:7px;border:none;background:none;
-  color:var(--text-2);font-size:12px;font-weight:500;transition:all .2s;min-width:60px}
+.sm-tab{flex:1;padding:7px;border-radius:7px;border:none;background:none;
+  color:var(--text-2);font-size:12px;font-weight:500;transition:all .2s;min-width:70px}
 .sm-tab.active{background:var(--gold);color:var(--navy);font-weight:700}
 .sm-page{display:none}.sm-page.active{display:block}
 .fc{background:var(--navy);border:1px solid var(--bd);border-radius:var(--r);
@@ -225,7 +224,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .uz .zi{font-size:24px;display:block;margin-bottom:5px;opacity:.5}
 .up-prev{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .pt{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid var(--bd)}
-.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;flex-wrap:wrap}
+.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
 .btn-p{padding:9px 22px;border-radius:var(--r);background:var(--gold);
   color:var(--navy);border:none;font-size:13px;font-weight:700;transition:background .15s}
 .btn-p:hover{background:var(--gold-l)}
@@ -343,6 +342,8 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   justify-content:center;opacity:0;background:rgba(0,0,0,.4);transition:opacity .2s}
 .gal-item:hover .gal-overlay{opacity:1}
 .gal-overlay span{font-size:24px}
+
+/* admin gallery */
 .gal-admin-grid{display:flex;gap:8px;flex-wrap:wrap}
 .gal-admin-item{position:relative;width:72px;height:72px}
 .gal-admin-item img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid var(--bd)}
@@ -351,6 +352,15 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   font-size:11px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;line-height:1;padding:0}
 .gal-del:hover{background:#c03030}
+
+/* REQUEST LIST */
+.req-item{background:var(--navy-2);border:1px solid var(--bd);border-radius:var(--r);padding:10px 14px;margin-bottom:6px}
+.req-item .req-name{font-weight:700;color:var(--gold)}
+.req-item .req-phone{color:var(--text-2);margin-right:10px}
+.req-item .req-date{color:var(--text-3);font-size:11px;float:left}
+.req-item .req-unit{font-size:12px;color:var(--text-2)}
+.req-actions{display:flex;gap:6px;margin-top:4px}
+.req-actions button{padding:4px 12px;border-radius:5px;border:none;font-size:11px;font-weight:700}
 
 /* LIGHTBOX */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);
@@ -369,16 +379,10 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   cursor:pointer;display:flex;align-items:center;justify-content:center}
 #lb-close:hover{background:rgba(255,255,255,.2)}
 
-/* REQUEST BADGE */
-.req-badge{background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;margin-right:5px}
-
 @media(max-width:640px){
   .cb-fields{flex-direction:column}
   .cb-sep{display:none}
   .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
-  .fg{grid-template-columns:1fr}
-  .sm-tabs{flex-wrap:wrap}
-  .sm-tab{flex:1 0 auto;min-width:50px}
 }
 </style>
 </head>
@@ -488,171 +492,252 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 </div>
 
 <script>
-/* ═══ STATE ═══ */
-const S={
-  gistId:'',token:'',adminPass:'123456',
-  units:[],images:{},gallery:[],
-  requests:[], // {id, unitId, unitNumber, name, phone, notes, createdAt, status:'pending'|'accepted'|'rejected'}
-  block:'A',floor:'أرضي',
-  view:'browse',
-  statusOn:true,importBuf:[],
-  setUnlocked:false,addUnlocked:false,editingId:null,
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+const S = {
+  gistId: '',
+  token: '',
+  adminPass: '123456',
+  units: [],
+  images: {},
+  gallery: [],
+  block: 'A',
+  floor: 'أرضي',
+  view: 'browse',
+  statusOn: true,
+  importBuf: [],
+  setUnlocked: false,
+  addUnlocked: false,
+  editingId: null,
+  currentUnitId: null // للاستخدام في طلب الحجز
 };
-const FLOORS={A:['قبو','أرضي','1','2','3','4','5','6'],B:['قبو','أرضي','1','2','3','4','5','6']};
-const FNAME='albaik_db.json';
+const FLOORS = { A: ['قبو','أرضي','1','2','3','4','5','6'], B: ['قبو','أرضي','1','2','3','4','5','6'] };
+const FNAME = 'albaik_db.json';
 
-/* ═══ BOOT ═══ */
+/* ═══════════════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════════════ */
 (function(){
-  try{const c=JSON.parse(localStorage.getItem('albaik_cfg')||'{}');
-    S.gistId=c.g||'';S.token=c.t||'';S.adminPass=c.p||'123456';}catch(e){}
+  try {
+    const c = JSON.parse(localStorage.getItem('albaik_cfg') || '{}');
+    S.gistId = c.g || '';
+    S.token = c.t || '';
+    S.adminPass = c.p || '123456';
+  } catch(e) {}
   loadData();
-  setTimeout(()=>{
-    const z=document.getElementById('idrop');if(!z)return;
-    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drag')});
-    z.addEventListener('dragleave',()=>z.classList.remove('drag'));
-    z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)readCSV(f);});
-  },500);
+  // drag-drop for import
+  setTimeout(() => {
+    const z = document.getElementById('idrop');
+    if (!z) return;
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag');
+      const f = e.dataTransfer.files[0];
+      if (f) readCSV(f);
+    });
+  }, 500);
 })();
 
-/* ═══ VIEW ═══ */
-function setView(v){
-  S.view=v;
-  document.getElementById('vt-browse').classList.toggle('active',v==='browse');
-  document.getElementById('vt-map').classList.toggle('active',v==='map');
-  document.getElementById('view-browse').style.display=v==='browse'?'block':'none';
-  document.getElementById('view-map').style.display=v==='map'?'block':'none';
-  if(v==='map') renderMap();
+/* ═══════════════════════════════════════════════════
+   VIEW
+═══════════════════════════════════════════════════ */
+function setView(v) {
+  S.view = v;
+  document.getElementById('vt-browse').classList.toggle('active', v === 'browse');
+  document.getElementById('vt-map').classList.toggle('active', v === 'map');
+  document.getElementById('view-browse').style.display = v === 'browse' ? 'block' : 'none';
+  document.getElementById('view-map').style.display = v === 'map' ? 'block' : 'none';
+  if (v === 'map') renderMap();
 }
 
-/* ═══ GIST API ═══ */
-async function loadData(){
-  if(!S.gistId){renderAll();renderGallery();return;}
-  try{
-    const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{headers:S.token?{Authorization:`token ${S.token}`}:{}});
-    if(!r.ok) throw new Error(r.status);
-    const d=await r.json();const f=d.files[FNAME];
-    if(f&&f.content){
-      const p=JSON.parse(f.content);
-      S.units=p.units||[];
-      S.images=p.images||{};
-      S.gallery=p.gallery||[];
-      S.requests=p.requests||[];
-    }else{
-      S.units=[];S.images={};S.gallery=[];S.requests=[];
+/* ═══════════════════════════════════════════════════
+   GIST API (محسّن مع إعادة التحميل بعد الحفظ)
+═══════════════════════════════════════════════════ */
+async function loadData() {
+  if (!S.gistId) {
+    renderAll();
+    renderGallery();
+    return;
+  }
+  try {
+    const r = await fetch(`https://api.github.com/gists/${S.gistId}`, {
+      headers: S.token ? { Authorization: `token ${S.token}` } : {}
+    });
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const f = d.files[FNAME];
+    if (f && f.content) {
+      const p = JSON.parse(f.content);
+      S.units = p.units || [];
+      S.images = p.images || {};
+      S.gallery = p.gallery || [];
+      // تأكد من أن كل وحدة لديها مصفوفة requests
+      S.units.forEach(u => { if (!u.requests) u.requests = []; });
+    } else {
+      S.units = [];
+      S.images = {};
+      S.gallery = [];
     }
-    setSyncTime();renderAll();renderGallery();toast('تم التحديث','ok');
-  }catch(e){
-    if(String(e.message)==='404'){S.units=[];S.images={};S.gallery=[];S.requests=[];renderAll();renderGallery();}
-    else if(String(e.message)!==''){toast('خطأ: '+e.message,'err');}
-    renderAll();renderGallery();
+    setSyncTime();
+    renderAll();
+    renderGallery();
+    toast('تم التحديث من الخادم', 'ok');
+  } catch (e) {
+    if (e.message === '404') {
+      S.units = [];
+      S.images = {};
+      S.gallery = [];
+      renderAll();
+      renderGallery();
+      toast('لم يتم العثور على الملف، تم إنشاء بيانات جديدة', 'ok');
+    } else {
+      toast('خطأ في التحميل: ' + e.message, 'err');
+      renderAll();
+      renderGallery();
+    }
   }
 }
 
-async function saveData(){
-  if(!S.gistId||!S.token){toast('أدخل Gist ID والـ Token في الإعدادات','err');return false;}
-  const content=JSON.stringify({units:S.units,images:S.images,gallery:S.gallery||[],requests:S.requests||[]},null,2);
-  try{
-    const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{
-      method:'PATCH',headers:{Authorization:`token ${S.token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({files:{[FNAME]:{content}}}),
+async function saveData() {
+  if (!S.gistId || !S.token) {
+    toast('أدخل Gist ID والـ Token في الإعدادات', 'err');
+    return false;
+  }
+  const content = JSON.stringify({ units: S.units, images: S.images, gallery: S.gallery || [] }, null, 2);
+  try {
+    const r = await fetch(`https://api.github.com/gists/${S.gistId}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `token ${S.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ files: { [FNAME]: { content } } })
     });
-    if(!r.ok){
-      const errMsg=await r.text();
+    if (!r.ok) {
+      const errMsg = await r.text();
       throw new Error(`HTTP ${r.status}: ${errMsg}`);
     }
-    setSyncTime();return true;
-  }catch(e){toast('خطأ في الحفظ: '+e.message,'err');console.error(e);return false;}
+    setSyncTime();
+    return true;
+  } catch (e) {
+    toast('خطأ في الحفظ: ' + e.message, 'err');
+    console.error('Save error:', e);
+    return false;
+  }
 }
 
-function setSyncTime(){document.getElementById('sync-lbl').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar');}
+function setSyncTime() {
+  document.getElementById('sync-lbl').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar');
+}
 
-/* ═══ RENDER ALL ═══ */
-function renderAll(){renderStats();renderFloorPills();renderUGrid();if(S.view==='map')renderMap();}
+/* ═══════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════ */
+function renderAll() {
+  renderStats();
+  renderFloorPills();
+  renderUGrid();
+  if (S.view === 'map') renderMap();
+}
 
-/* ═══ STATS ═══ */
-function renderStats(){
-  const u=S.units,tot=u.length,av=u.filter(x=>x.status==='available').length,rs=tot-av;
-  const pendingReqs=S.requests.filter(r=>r.status==='pending').length;
-  document.getElementById('stats-bar').innerHTML=`
+function renderStats() {
+  const u = S.units, tot = u.length, av = u.filter(x => x.status === 'available').length, rs = tot - av;
+  document.getElementById('stats-bar').innerHTML = `
     <div class="stat-pill"><div class="lbl">إجمالي الوحدات</div><div class="val">${tot}</div></div>
     <div class="stat-pill g"><div class="lbl">متاحة</div><div class="val">${av}</div></div>
     <div class="stat-pill r"><div class="lbl">محجوزة</div><div class="val">${rs}</div></div>
-    <div class="stat-pill go"><div class="lbl">نسبة الإشغال</div><div class="val">${tot?Math.round(rs/tot*100):0}%</div></div>
-    <div class="stat-pill" style="border-color:var(--gold)"><div class="lbl">طلبات الحجز</div><div class="val" style="color:var(--gold)">${pendingReqs}</div></div>
+    <div class="stat-pill go"><div class="lbl">نسبة الإشغال</div><div class="val">${tot ? Math.round(rs/tot*100) : 0}%</div></div>
   `;
 }
 
-/* ═══ BLOCK / FLOOR ═══ */
-function selBlock(b){
-  S.block=b;S.floor='أرضي';
-  document.querySelectorAll('.btab').forEach(x=>x.classList.remove('active'));
-  document.getElementById('btab-'+b).classList.add('active');
-  renderFloorPills();renderUGrid();if(S.view==='map')renderMap();
+function selBlock(b) {
+  S.block = b;
+  S.floor = 'أرضي';
+  document.querySelectorAll('.btab').forEach(x => x.classList.remove('active'));
+  document.getElementById('btab-' + b).classList.add('active');
+  renderFloorPills();
+  renderUGrid();
+  if (S.view === 'map') renderMap();
 }
-function renderFloorPills(){
-  const floors=FLOORS[S.block];
-  if(!floors.includes(S.floor))S.floor=floors[1]||floors[0];
-  document.getElementById('fpills').innerHTML=floors.map(f=>
-    `<button class="fpill ${f===S.floor?'active':''}" onclick="selFloor('${f}')">${f}</button>`
+
+function renderFloorPills() {
+  const floors = FLOORS[S.block];
+  if (!floors.includes(S.floor)) S.floor = floors[1] || floors[0];
+  document.getElementById('fpills').innerHTML = floors.map(f =>
+    `<button class="fpill ${f === S.floor ? 'active' : ''}" onclick="selFloor('${f}')">${f}</button>`
   ).join('');
 }
-function selFloor(f){S.floor=f;renderFloorPills();renderUGrid();if(S.view==='map')renderMap();}
 
-/* ═══ UNITS GRID ═══ */
-function renderUGrid(){
-  const units=S.units.filter(u=>u.block===S.block&&u.floor===S.floor);
-  const g=document.getElementById('ugrid'),e=document.getElementById('empty-msg');
-  if(!units.length){g.innerHTML='';e.style.display='block';return;}
-  e.style.display='none';
-  g.innerHTML=units.map(u=>`
-    <div class="uc ${u.status}" data-id="${u.id}" onclick="${u.status==='available'?`showDetail('${u.id}')`:''}" >
-      <span class="ubadge ${u.status==='available'?'ba':'br'}">${u.status==='available'?'متاح':'محجوز'}</span>
+function selFloor(f) {
+  S.floor = f;
+  renderFloorPills();
+  renderUGrid();
+  if (S.view === 'map') renderMap();
+}
+
+// عرض الوحدات مع إضافة زر "طلب حجز" للعميل
+function renderUGrid() {
+  const units = S.units.filter(u => u.block === S.block && u.floor === S.floor);
+  const g = document.getElementById('ugrid'), e = document.getElementById('empty-msg');
+  if (!units.length) { g.innerHTML = ''; e.style.display = 'block'; return; }
+  e.style.display = 'none';
+  g.innerHTML = units.map(u => `
+    <div class="uc ${u.status}" data-id="${u.id}" onclick="${u.status === 'available' ? `showDetail('${u.id}')` : ''}">
+      <span class="ubadge ${u.status === 'available' ? 'ba' : 'br'}">${u.status === 'available' ? 'متاح' : 'محجوز'}</span>
       <div class="uc-num">${u.number}</div>
-      <div class="uc-type">${u.type==='shop'?'محل تجاري':'مكتب'}</div>
+      <div class="uc-type">${u.type === 'shop' ? 'محل تجاري' : 'مكتب'}</div>
       <div class="uc-area">${u.totalArea} م²</div>
-      <div class="uc-price"></div>
-      <div class="uc-disc"></div>
-    </div>`).join('');
-  // re-apply calculator if active
-  if(calcActive){
-    const meter=parseFloat(document.getElementById('cb-meter')?.value)||0;
-    const disc=parseFloat(document.getElementById('cb-disc')?.value)||0;
-    if(meter>0) _applyToCards(meter,disc);
+      ${u.requests && u.requests.length ? `<div style="font-size:9px;color:var(--gold);margin-top:4px">📩 ${u.requests.length} طلب</div>` : ''}
+    </div>
+  `).join('');
+  // إعادة تطبيق الحاسبة إن كانت نشطة
+  if (calcActive) {
+    const meter = parseFloat(document.getElementById('cb-meter')?.value) || 0;
+    const disc = parseFloat(document.getElementById('cb-disc')?.value) || 0;
+    if (meter > 0) _applyToCards(meter, disc);
   }
 }
 
-/* ═══ MAP ═══ */
-function renderMap(){
-  const wrap=document.getElementById('bmap');if(!wrap)return;
-  const floors=['6','5','4','3','2','1','أرضي','قبو'];
-  let h='';
-  ['A','B'].forEach(bl=>{
-    h+=`<div class="bcol"><div class="bch">الكتلة ${bl}</div>`;
-    floors.forEach(fl=>{
-      const uu=S.units.filter(u=>u.block===bl&&u.floor===fl);
-      h+=`<div class="mfr"><div class="mflbl">${fl}</div><div class="mfu">
-        ${uu.length?uu.map(u=>`<div class="mu ${u.status}" title="${u.number}·${u.totalArea}م²"
-          onclick="${u.status==='available'?`showDetail('${u.id}')`:''}">${u.number.slice(-2)}</div>`).join('')
-        :'<span style="font-size:10px;color:var(--text-3)">—</span>'}
+// خريطة
+function renderMap() {
+  const wrap = document.getElementById('bmap'); if (!wrap) return;
+  const floors = ['6','5','4','3','2','1','أرضي','قبو'];
+  let h = '';
+  ['A','B'].forEach(bl => {
+    h += `<div class="bcol"><div class="bch">الكتلة ${bl}</div>`;
+    floors.forEach(fl => {
+      const uu = S.units.filter(u => u.block === bl && u.floor === fl);
+      h += `<div class="mfr"><div class="mflbl">${fl}</div><div class="mfu">
+        ${uu.length ? uu.map(u => `<div class="mu ${u.status}" title="${u.number}·${u.totalArea}م²"
+          onclick="${u.status === 'available' ? `showDetail('${u.id}')` : ''}">${u.number.slice(-2)}</div>`).join('')
+        : '<span style="font-size:10px;color:var(--text-3)">—</span>'}
       </div></div>`;
     });
-    h+='</div>';
+    h += '</div>';
   });
-  wrap.innerHTML=h;
+  wrap.innerHTML = h;
 }
 
-/* ═══ UNIT DETAIL + REQUEST FORM ═══ */
-function showDetail(id){
-  const u=S.units.find(x=>x.id===id);if(!u)return;
-  const imgs=S.images[id]||[];
-  // Check if this unit already has a pending request
-  const existingReq=S.requests.find(r=>r.unitId===id && r.status==='pending');
-  document.getElementById('mc').innerHTML=`
+/* ═══════════════════════════════════════════════════
+   UNIT DETAIL + REQUEST FORM (للعميل)
+═══════════════════════════════════════════════════ */
+function showDetail(id) {
+  const u = S.units.find(x => x.id === id);
+  if (!u || u.status === 'reserved') {
+    toast('هذه الوحدة محجوزة بالفعل', 'err');
+    return;
+  }
+  S.currentUnitId = id;
+  const imgs = S.images[id] || [];
+  document.getElementById('mc').innerHTML = `
     <div class="dm-head">
       <h2>وحدة ${u.number}</h2>
-      <p>${u.type==='shop'?'محل تجاري':'مكتب'} · الكتلة ${u.block} · طابق ${u.floor}</p>
+      <p>${u.type === 'shop' ? 'محل تجاري' : 'مكتب'} · الكتلة ${u.block} · طابق ${u.floor}</p>
     </div>
-    ${imgs.length?`<div class="dm-imgs">${imgs.map(s=>`<img src="${s}" class="dm-img">`).join('')}</div>`:''}
+    ${imgs.length ? `<div class="dm-imgs">${imgs.map(s => `<img src="${s}" class="dm-img">`).join('')}</div>` : ''}
     <div class="info-grid">
       <div class="ic"><div class="lb">مساحة المحل</div><div class="vl">${u.shopArea} م²</div></div>
       <div class="ic"><div class="lb">مساحة الخدمات</div><div class="vl">${u.svcArea} م²</div></div>
@@ -675,125 +760,163 @@ function showDetail(id){
       </div>
       <div class="calc-saving" id="c-saving"></div>
     </div>
-    ${u.notes?`<div style="font-size:12px;color:var(--text-3);margin-bottom:10px">📝 ${u.notes}</div>`:''}
-    ${existingReq ? `<div style="background:rgba(201,168,76,.15);padding:10px;border-radius:var(--r);margin:10px 0;text-align:center;color:var(--gold);font-size:13px">⏳ لديك طلب حجز قيد المراجعة لهذه الوحدة</div>` : ''}
+    ${u.notes ? `<div style="font-size:12px;color:var(--text-3);margin-bottom:10px">📝 ${u.notes}</div>` : ''}
+    <hr style="border-color:var(--bd);margin:12px 0">
+    <h3 style="font-size:13px;color:var(--gold);margin-bottom:8px">📞 طلب حجز هذه الوحدة</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div class="ff"><label>الاسم الكامل</label><input type="text" id="req-name" placeholder="أدخل اسمك"></div>
+      <div class="ff"><label>رقم الهاتف</label><input type="tel" id="req-phone" placeholder="09xxxxxxxx"></div>
+    </div>
     <div class="dm-btns">
       <button class="b-close" onclick="closeMod()">إغلاق</button>
-      ${!existingReq ? `<button class="b-req" onclick="showRequestForm('${u.id}','${u.number}')">📞 طلب الحجز</button>` : `<button class="b-req" disabled style="opacity:0.6">تم الطلب مسبقاً</button>`}
-    </div>`;
-  document.getElementById('ov').classList.add('open');
-}
-
-function calcPrice(){
-  const p=parseFloat(document.getElementById('c-price')?.value)||0;
-  const d=parseFloat(document.getElementById('c-disc')?.value)||0;
-  const dc=Math.min(d,100);
-  const fin=Math.round(p*(1-dc/100));
-  const sav=p-fin;
-  document.getElementById('c-final').textContent='$'+fin.toLocaleString();
-  document.getElementById('c-saving').textContent=dc>0&&p>0?`وفّرت $${sav.toLocaleString()} بخصم ${dc.toFixed(0)}%`:'';
-}
-
-/* ═══ REQUEST FORM (for client) ═══ */
-function showRequestForm(unitId, unitNumber){
-  // Build a simple form inside the modal
-  document.getElementById('mc').innerHTML=`
-    <div class="dm-head">
-      <h2>📋 طلب حجز الوحدة ${unitNumber}</h2>
-      <p>املأ البيانات التالية لإرسال طلب الحجز</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px;margin:12px 0">
-      <div class="ff"><label>الاسم الكامل</label><input type="text" id="req-name" placeholder="أدخل اسمك"></div>
-      <div class="ff"><label>رقم الهاتف</label><input type="text" id="req-phone" placeholder="09xxxxxxxx"></div>
-      <div class="ff"><label>ملاحظات إضافية (اختياري)</label><textarea id="req-notes" rows="2" placeholder="أي تفاصيل إضافية..."></textarea></div>
-    </div>
-    <div class="dm-btns">
-      <button class="b-close" onclick="closeMod()">إلغاء</button>
-      <button class="b-req" onclick="submitRequest('${unitId}','${unitNumber}')">✅ إرسال الطلب</button>
+      <button class="b-req" onclick="submitRequest('${u.id}')">📩 إرسال طلب الحجز</button>
     </div>
   `;
+  document.getElementById('ov').classList.add('open');
 }
 
-async function submitRequest(unitId, unitNumber){
-  const name=document.getElementById('req-name')?.value.trim();
-  const phone=document.getElementById('req-phone')?.value.trim();
-  const notes=document.getElementById('req-notes')?.value.trim()||'';
-  if(!name||!phone){
-    toast('يرجى ملء الاسم ورقم الهاتف','err');
+function calcPrice() {
+  const p = parseFloat(document.getElementById('c-price')?.value) || 0;
+  const d = parseFloat(document.getElementById('c-disc')?.value) || 0;
+  const dc = Math.min(d, 100);
+  const fin = Math.round(p * (1 - dc/100));
+  const sav = p - fin;
+  document.getElementById('c-final').textContent = '$' + fin.toLocaleString();
+  document.getElementById('c-saving').textContent = dc > 0 && p > 0 ? `وفّرت $${sav.toLocaleString()} بخصم ${dc.toFixed(0)}%` : '';
+}
+
+async function submitRequest(unitId) {
+  const name = document.getElementById('req-name')?.value?.trim();
+  const phone = document.getElementById('req-phone')?.value?.trim();
+  if (!name || !phone) {
+    toast('الرجاء إدخال الاسم ورقم الهاتف', 'err');
     return;
   }
-  // Check if already pending
-  if(S.requests.some(r=>r.unitId===unitId && r.status==='pending')){
-    toast('لديك طلب مسبق لهذه الوحدة','err');
+  const u = S.units.find(x => x.id === unitId);
+  if (!u) { toast('الوحدة غير موجودة', 'err'); return; }
+  if (u.status === 'reserved') {
+    toast('هذه الوحدة محجوزة بالفعل', 'err');
     closeMod();
     return;
   }
-  const req={
-    id:'req-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),
-    unitId,
-    unitNumber,
+  // إضافة الطلب
+  if (!u.requests) u.requests = [];
+  u.requests.push({
     name,
     phone,
-    notes,
-    createdAt:new Date().toISOString(),
-    status:'pending' // pending, accepted, rejected
-  };
-  S.requests.push(req);
-  const ok=await saveData();
-  if(ok){
-    await loadData(); // refresh from Gist
-    toast(`تم إرسال طلب الحجز للوحدة ${unitNumber} بنجاح ✓`,`ok`);
+    date: new Date().toISOString(),
+    status: 'pending' // pending, confirmed, rejected
+  });
+  const ok = await saveData();
+  if (ok) {
+    await loadData(); // تحديث من الخادم
+    toast('تم إرسال طلبك بنجاح، سيتواصل معك الفريق قريباً', 'ok');
     closeMod();
     renderAll();
-  }else{
-    // revert local change
-    S.requests=S.requests.filter(r=>r.id!==req.id);
-    toast('فشل إرسال الطلب، حاول مرة أخرى','err');
+  } else {
+    toast('فشل إرسال الطلب، حاول مرة أخرى', 'err');
   }
 }
 
-function closeMod(e){if(e&&e.target!==document.getElementById('ov'))return;document.getElementById('ov').classList.remove('open');}
-
-/* ═══════════════════════════════════════════════════
-   SETTINGS MODAL (كلمة السر: 123456)
-═══════════════════════════════════════════════════ */
-function openSettings(){
-  document.getElementById('mc').innerHTML=buildSettingsHTML();
-  document.getElementById('ov').classList.add('open');
-  setTimeout(()=>{
-    const sg=document.getElementById('s-gist');
-    const st=document.getElementById('s-token');
-    if(sg){sg.value=S.gistId;sg.style.direction='ltr';sg.style.textAlign='left';}
-    if(st){st.value=S.token;st.style.direction='ltr';st.style.textAlign='left';}
-    if(S.setUnlocked) showSetContent();
-  },30);
+function closeMod(e) {
+  if (e && e.target !== document.getElementById('ov')) return;
+  document.getElementById('ov').classList.remove('open');
 }
 
-function buildSettingsHTML(){
+/* ═══════════════════════════════════════════════════
+   CALCULATOR BAR
+═══════════════════════════════════════════════════ */
+let calcActive = false;
+function applyCalc() {
+  const meter = parseFloat(document.getElementById('cb-meter')?.value) || 0;
+  const disc = parseFloat(document.getElementById('cb-disc')?.value) || 0;
+  if (meter > 0) {
+    calcActive = true;
+    _applyToCards(meter, disc);
+  } else {
+    clearCalcDisplay();
+  }
+}
+function _applyToCards(meterPrice, discPct) {
+  const dc = Math.min(Math.max(discPct || 0, 0), 100);
+  document.querySelectorAll('.uc').forEach(card => {
+    const id = card.getAttribute('data-id');
+    const u = id ? S.units.find(x => x.id === id) : null;
+    if (!u) return;
+    const basePrice = meterPrice * u.totalArea;
+    const finalPrice = Math.round(basePrice * (1 - dc/100));
+    const saving = basePrice - finalPrice;
+    let priceEl = card.querySelector('.uc-price');
+    let discEl = card.querySelector('.uc-disc');
+    if (!priceEl) { priceEl = document.createElement('div'); priceEl.className = 'uc-price'; card.appendChild(priceEl); }
+    if (!discEl) { discEl = document.createElement('div'); discEl.className = 'uc-disc'; card.appendChild(discEl); }
+    priceEl.textContent = '$' + finalPrice.toLocaleString();
+    priceEl.classList.add('show');
+    if (dc > 0 && saving > 0) {
+      discEl.textContent = `خصم ${dc}% · وفّرت $${saving.toLocaleString()}`;
+      discEl.classList.add('show');
+    } else {
+      discEl.classList.remove('show');
+    }
+  });
+  const hint = document.getElementById('cb-hint');
+  if (hint) {
+    const discLabel = dc > 0 ? ` · خصم ${dc}%` : '';
+    hint.textContent = `سعر المتر $${meterPrice}${discLabel} — يتم عرض الأسعار على جميع الوحدات`;
+    hint.className = 'cb-hint active';
+  }
+}
+function clearCalcDisplay() {
+  calcActive = false;
+  document.querySelectorAll('.uc-price,.uc-disc').forEach(el => el.classList.remove('show'));
+  const hint = document.getElementById('cb-hint');
+  if (hint) { hint.textContent = ''; hint.className = 'cb-hint'; }
+}
+function clearCalc() {
+  const el1 = document.getElementById('cb-meter');
+  const el2 = document.getElementById('cb-disc');
+  if (el1) el1.value = '';
+  if (el2) el2.value = '';
+  clearCalcDisplay();
+}
+
+/* ═══════════════════════════════════════════════════
+   SETTINGS (ADMIN)
+═══════════════════════════════════════════════════ */
+function openSettings() {
+  document.getElementById('mc').innerHTML = buildSettingsHTML();
+  document.getElementById('ov').classList.add('open');
+  setTimeout(() => {
+    const sg = document.getElementById('s-gist');
+    const st = document.getElementById('s-token');
+    if (sg) { sg.value = S.gistId; sg.style.direction = 'ltr'; sg.style.textAlign = 'left'; }
+    if (st) { st.value = S.token; st.style.direction = 'ltr'; st.style.textAlign = 'left'; }
+    if (S.setUnlocked) showSetContent();
+  }, 30);
+}
+
+function buildSettingsHTML() {
   return `
   <div style="margin-bottom:16px">
     <div style="font-size:17px;font-weight:700;color:var(--text)">⚙️ إدارة النظام</div>
     <div style="font-size:12px;color:var(--text-2);margin-top:3px">مخصصة للمسؤول فقط</div>
   </div>
-  <!-- GATE -->
   <div id="s-gate">
     <div class="gate">
       <div class="lock">🔐</div>
       <p>أدخل كلمة مرور الإدارة للوصول</p>
       <div class="gate-inp">
-        <input type="password" id="s-pass-inp" placeholder="كلمة المرور"
-          onkeydown="if(event.key==='Enter')chkSetPass()">
+        <input type="password" id="s-pass-inp" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')chkSetPass()">
         <button class="btn-p" onclick="chkSetPass()">دخول</button>
       </div>
     </div>
   </div>
-  <!-- CONTENT -->
   <div id="s-content" style="display:none">
     <div class="sm-tabs">
       <button class="sm-tab active" id="smt-conn" onclick="smTab('conn')">الاتصال</button>
       <button class="sm-tab" id="smt-add"  onclick="smTab('add')">إضافة وحدة</button>
       <button class="sm-tab" id="smt-list" onclick="smTab('list')">الوحدات</button>
-      <button class="sm-tab" id="smt-requests" onclick="smTab('requests')">📋 الطلبات</button>
+      <button class="sm-tab" id="smt-requests" onclick="smTab('requests')">📩 الطلبات</button>
       <button class="sm-tab" id="smt-dash" onclick="smTab('dash')">إحصائيات</button>
       <button class="sm-tab" id="smt-imp"  onclick="smTab('imp')">استيراد</button>
       <button class="sm-tab" id="smt-gal"  onclick="smTab('gal')">معرض الصور</button>
@@ -843,7 +966,7 @@ function buildSettingsHTML(){
         </div>
       </div>
     </div>
-    <!-- TAB: ADD -->
+    <!-- TAB: ADD UNIT -->
     <div class="sm-page" id="smp-add">
       <div class="fc">
         <h3>📍 المعلومات الأساسية</h3>
@@ -887,7 +1010,7 @@ function buildSettingsHTML(){
       </div>
       <input type="hidden" id="f-id">
     </div>
-    <!-- TAB: LIST -->
+    <!-- TAB: LIST UNITS -->
     <div class="sm-page" id="smp-list">
       <div class="tw">
         <div class="tb-bar">
@@ -900,45 +1023,19 @@ function buildSettingsHTML(){
         </div>
         <table class="tt"><thead><tr>
           <th>الوحدة</th><th>الكتلة</th><th>الطابق</th><th>النوع</th>
-          <th>المساحة</th><th>الحالة</th><th>إجراءات</th>
+          <th>المساحة</th><th>الحالة</th><th>الطلبات</th><th>إجراءات</th>
         </tr></thead><tbody id="ttbody"></tbody></table>
       </div>
     </div>
-    <!-- TAB: REQUESTS -->
+    <!-- TAB: REQUESTS (جديد) -->
     <div class="sm-page" id="smp-requests">
-      <div class="tw" id="requests-container">
-        <div id="requests-list"></div>
-      </div>
+      <div id="requests-container"></div>
     </div>
-    <!-- TAB: DASH -->
+    <!-- TAB: DASHBOARD -->
     <div class="sm-page" id="smp-dash">
       <div id="dash-c"></div>
     </div>
-    <!-- TAB: GALLERY -->
-    <div class="sm-page" id="smp-gal">
-      <div class="fc">
-        <h3>🖼️ معرض صور المجمع</h3>
-        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px">
-          الصور التي ترفعها هنا تظهر لجميع الزوار أسفل صفحة التصفح
-        </p>
-        <div class="uz" onclick="document.getElementById('gal-file').click()">
-          <span class="zi">🖼️</span>
-          <p style="font-size:13px;color:var(--text-2)">انقر لرفع صور المجمع</p>
-          <small style="color:var(--text-3)">PNG · JPG · بدون حد للعدد</small>
-        </div>
-        <input type="file" id="gal-file" multiple accept="image/*" style="display:none"
-          onchange="addGalleryImgs(event)">
-        <div style="margin-top:14px">
-          <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">الصور الحالية:</div>
-          <div class="gal-admin-grid" id="gal-admin-grid">
-            <div style="color:var(--text-3);font-size:12px">لا توجد صور بعد</div>
-          </div>
-        </div>
-        <div class="fa" style="margin-top:12px">
-          <button class="btn-p" onclick="saveGallery()">💾 حفظ الصور</button>
-        </div>
-      </div>
-    </div>
+    <!-- TAB: IMPORT -->
     <div class="sm-page" id="smp-imp">
       <div class="fc">
         <h3>📋 الأعمدة المطلوبة</h3>
@@ -965,240 +1062,307 @@ function buildSettingsHTML(){
         </div>
       </div>
     </div>
+    <!-- TAB: GALLERY -->
+    <div class="sm-page" id="smp-gal">
+      <div class="fc">
+        <h3>🖼️ معرض صور المجمع</h3>
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px">الصور التي ترفعها هنا تظهر لجميع الزوار</p>
+        <div class="uz" onclick="document.getElementById('gal-file').click()">
+          <span class="zi">🖼️</span>
+          <p style="font-size:13px;color:var(--text-2)">انقر لرفع صور المجمع</p>
+          <small style="color:var(--text-3)">PNG · JPG · بدون حد للعدد</small>
+        </div>
+        <input type="file" id="gal-file" multiple accept="image/*" style="display:none" onchange="addGalleryImgs(event)">
+        <div style="margin-top:14px">
+          <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">الصور الحالية:</div>
+          <div class="gal-admin-grid" id="gal-admin-grid"><div style="color:var(--text-3);font-size:12px">لا توجد صور بعد</div></div>
+        </div>
+        <div class="fa" style="margin-top:12px">
+          <button class="btn-p" onclick="saveGallery()">💾 حفظ الصور</button>
+        </div>
+      </div>
+    </div>
   </div>`;
 }
 
-function chkSetPass(){
-  const v=document.getElementById('s-pass-inp')?.value;
-  if(v===S.adminPass){S.setUnlocked=true;showSetContent();}
-  else toast('كلمة المرور غير صحيحة','err');
+// --- Admin functions ---
+function chkSetPass() {
+  const v = document.getElementById('s-pass-inp')?.value;
+  if (v === S.adminPass) { S.setUnlocked = true; showSetContent(); }
+  else toast('كلمة المرور غير صحيحة', 'err');
 }
-
-function showSetContent(){
-  document.getElementById('s-gate').style.display='none';
-  document.getElementById('s-content').style.display='block';
+function showSetContent() {
+  document.getElementById('s-gate').style.display = 'none';
+  document.getElementById('s-content').style.display = 'block';
   updFloors(); renderTbl(); renderRequests(); renderDash();
 }
-
-function smTab(t){
-  document.querySelectorAll('.sm-tab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.sm-page').forEach(p=>p.classList.remove('active'));
-  const tabMap={conn:'smt-conn',add:'smt-add',list:'smt-list',requests:'smt-requests',dash:'smt-dash',imp:'smt-imp',gal:'smt-gal'};
-  const pageMap={conn:'smp-conn',add:'smp-add',list:'smp-list',requests:'smp-requests',dash:'smp-dash',imp:'smp-imp',gal:'smp-gal'};
-  const tabEl=document.getElementById(tabMap[t]);
-  if(tabEl) tabEl.classList.add('active');
-  const pageEl=document.getElementById(pageMap[t]);
-  if(pageEl) pageEl.classList.add('active');
-  if(t==='list') renderTbl();
-  if(t==='requests') renderRequests();
-  if(t==='dash') renderDash();
-  if(t==='gal') renderGalleryAdmin();
+function smTab(t) {
+  document.querySelectorAll('.sm-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sm-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('smt-'+t).classList.add('active');
+  document.getElementById('smp-'+t).classList.add('active');
+  if (t === 'list') renderTbl();
+  if (t === 'requests') renderRequests();
+  if (t === 'dash') renderDash();
+  if (t === 'gal') renderGalleryAdmin();
 }
 
-/* ═══ ADMIN FORM ═══ */
-function updFloors(){
-  const bl=document.getElementById('f-block')?.value||'A';
-  const sel=document.getElementById('f-floor');if(!sel)return;
-  sel.innerHTML=FLOORS[bl].map(f=>`<option value="${f}">${f}</option>`).join('');
+// --- Form functions ---
+function updFloors() {
+  const bl = document.getElementById('f-block')?.value || 'A';
+  const sel = document.getElementById('f-floor'); if (!sel) return;
+  sel.innerHTML = FLOORS[bl].map(f => `<option value="${f}">${f}</option>`).join('');
 }
-function calcAll(){
-  const sl=parseFloat(document.getElementById('f-sl')?.value)||0;
-  const sw=parseFloat(document.getElementById('f-sw')?.value)||0;
-  const rl=parseFloat(document.getElementById('f-rl')?.value)||0;
-  const rw=parseFloat(document.getElementById('f-rw')?.value)||0;
-  document.getElementById('comp-area').textContent=parseFloat((sl*sw+rl*rw).toFixed(2))+' م²';
+function calcAll() {
+  const sl = parseFloat(document.getElementById('f-sl')?.value) || 0;
+  const sw = parseFloat(document.getElementById('f-sw')?.value) || 0;
+  const rl = parseFloat(document.getElementById('f-rl')?.value) || 0;
+  const rw = parseFloat(document.getElementById('f-rw')?.value) || 0;
+  document.getElementById('comp-area').textContent = parseFloat((sl*sw + rl*rw).toFixed(2)) + ' م²';
 }
-function togStatus(){
-  S.statusOn=!S.statusOn;
-  const t=document.getElementById('stgl'),tx=document.getElementById('stxt');
-  if(t)t.classList.toggle('on',S.statusOn);
-  if(tx){tx.textContent=S.statusOn?'متاح':'محجوز';tx.className='tgl-lbl '+(S.statusOn?'tav':'trs');}
+function togStatus() {
+  S.statusOn = !S.statusOn;
+  const t = document.getElementById('stgl'), tx = document.getElementById('stxt');
+  if (t) t.classList.toggle('on', S.statusOn);
+  if (tx) { tx.textContent = S.statusOn ? 'متاح' : 'محجوز'; tx.className = 'tgl-lbl ' + (S.statusOn ? 'tav' : 'trs'); }
 }
-function resetForm(){
-  ['f-num','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  ['f-sl','f-sw','f-rl','f-rw'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0;});
-  const fi=document.getElementById('f-id');if(fi)fi.value='';
-  const sb=document.getElementById('save-btn');if(sb)sb.textContent='💾 حفظ الوحدة';
-  S.statusOn=true;
-  const t=document.getElementById('stgl'),tx=document.getElementById('stxt');
-  if(t){t.className='tgl on';}if(tx){tx.textContent='متاح';tx.className='tgl-lbl tav';}
+function resetForm() {
+  ['f-num','f-notes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['f-sl','f-sw','f-rl','f-rw'].forEach(id => { const el = document.getElementById(id); if (el) el.value = 0; });
+  const fi = document.getElementById('f-id'); if (fi) fi.value = '';
+  const sb = document.getElementById('save-btn'); if (sb) sb.textContent = '💾 حفظ الوحدة';
+  S.statusOn = true;
+  const t = document.getElementById('stgl'), tx = document.getElementById('stxt');
+  if (t) { t.className = 'tgl on'; } if (tx) { tx.textContent = 'متاح'; tx.className = 'tgl-lbl tav'; }
   calcAll();
 }
-async function saveUnit(){
-  const btn=document.getElementById('save-btn');
-  if(btn){btn.disabled=true;btn.textContent='⏳ ...';}
-  const sl=parseFloat(document.getElementById('f-sl')?.value)||0;
-  const sw=parseFloat(document.getElementById('f-sw')?.value)||0;
-  const rl=parseFloat(document.getElementById('f-rl')?.value)||0;
-  const rw=parseFloat(document.getElementById('f-rw')?.value)||0;
-  const sa=parseFloat((sl*sw).toFixed(2)),sva=parseFloat((rl*rw).toFixed(2)),ta=parseFloat((sa+sva).toFixed(2));
-  const block=document.getElementById('f-block')?.value||'A';
-  const floor=document.getElementById('f-floor')?.value||'أرضي';
-  const number=(document.getElementById('f-num')?.value||'').trim();
-  const type=document.getElementById('f-type')?.value||'shop';
-  const notes=(document.getElementById('f-notes')?.value||'').trim();
-  if(!number){toast('يرجى إدخال رقم الوحدة','err');if(btn){btn.disabled=false;btn.textContent='💾 حفظ الوحدة';}return;}
-  const editId=document.getElementById('f-id')?.value||'';
-  const id=editId||(block+'-'+floor+'-'+number+'-'+Date.now());
-  const existing=editId?S.units.find(u=>u.id===editId):null;
-  const unit={id,block,floor,number,type,shopLength:sl,shopWidth:sw,serviceLength:rl,serviceWidth:rw,
-    shopArea:sa,svcArea:sva,totalArea:ta,
-    status:S.statusOn?'available':'reserved',notes,
-    createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
-  if(editId){const i=S.units.findIndex(u=>u.id===editId);if(i!==-1)S.units[i]=unit;}
-  else S.units.push(unit);
-  const ok=await saveData();
-  if(ok){await loadData();toast(editId?'تم التحديث ✓':'تم الإضافة ✓','ok');resetForm();renderAll();renderTbl();}
-  else {await loadData();toast('فشل الحفظ، تم الاستعادة','err');renderAll();renderTbl();}
-  if(btn){btn.disabled=false;btn.textContent='💾 حفظ الوحدة';}
+async function saveUnit() {
+  const btn = document.getElementById('save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ...'; }
+  const sl = parseFloat(document.getElementById('f-sl')?.value) || 0;
+  const sw = parseFloat(document.getElementById('f-sw')?.value) || 0;
+  const rl = parseFloat(document.getElementById('f-rl')?.value) || 0;
+  const rw = parseFloat(document.getElementById('f-rw')?.value) || 0;
+  const sa = parseFloat((sl * sw).toFixed(2));
+  const sva = parseFloat((rl * rw).toFixed(2));
+  const ta = parseFloat((sa + sva).toFixed(2));
+  const block = document.getElementById('f-block')?.value || 'A';
+  const floor = document.getElementById('f-floor')?.value || 'أرضي';
+  const number = (document.getElementById('f-num')?.value || '').trim();
+  const type = document.getElementById('f-type')?.value || 'shop';
+  const notes = (document.getElementById('f-notes')?.value || '').trim();
+  if (!number) { toast('يرجى إدخال رقم الوحدة', 'err'); if (btn) { btn.disabled = false; btn.textContent = '💾 حفظ الوحدة'; } return; }
+  const editId = document.getElementById('f-id')?.value || '';
+  const id = editId || (block + '-' + floor + '-' + number + '-' + Date.now());
+  const existing = editId ? S.units.find(u => u.id === editId) : null;
+  const unit = {
+    id, block, floor, number, type,
+    shopLength: sl, shopWidth: sw,
+    serviceLength: rl, serviceWidth: rw,
+    shopArea: sa, svcArea: sva, totalArea: ta,
+    status: S.statusOn ? 'available' : 'reserved',
+    notes,
+    requests: existing?.requests || [],
+    createdAt: existing?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  if (editId) {
+    const i = S.units.findIndex(u => u.id === editId);
+    if (i !== -1) S.units[i] = unit;
+  } else {
+    S.units.push(unit);
+  }
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast(editId ? 'تم التحديث ✓' : 'تم الإضافة ✓', 'ok');
+    resetForm();
+    renderAll();
+    renderTbl();
+    renderRequests();
+  } else {
+    await loadData();
+    toast('فشل الحفظ، تم استعادة البيانات القديمة', 'err');
+    renderAll();
+    renderTbl();
+    renderRequests();
+  }
+  if (btn) { btn.disabled = false; btn.textContent = '💾 حفظ الوحدة'; }
 }
-function editUnit(id){
-  const u=S.units.find(x=>x.id===id);if(!u)return;
+function editUnit(id) {
+  const u = S.units.find(x => x.id === id);
+  if (!u) return;
   smTab('add');
-  setTimeout(()=>{
-    const fi=document.getElementById('f-id');if(fi)fi.value=u.id;
-    const fb=document.getElementById('f-block');if(fb)fb.value=u.block;
+  setTimeout(() => {
+    const fi = document.getElementById('f-id'); if (fi) fi.value = u.id;
+    const fb = document.getElementById('f-block'); if (fb) fb.value = u.block;
     updFloors();
-    const ff=document.getElementById('f-floor');if(ff)ff.value=u.floor;
-    const fn=document.getElementById('f-num');if(fn)fn.value=u.number;
-    const ft=document.getElementById('f-type');if(ft)ft.value=u.type;
-    const fsl=document.getElementById('f-sl');if(fsl)fsl.value=u.shopLength;
-    const fsw=document.getElementById('f-sw');if(fsw)fsw.value=u.shopWidth;
-    const frl=document.getElementById('f-rl');if(frl)frl.value=u.serviceLength;
-    const frw=document.getElementById('f-rw');if(frw)frw.value=u.serviceWidth;
-    const fno=document.getElementById('f-notes');if(fno)fno.value=u.notes||'';
-    S.statusOn=u.status==='available';
-    const t=document.getElementById('stgl'),tx=document.getElementById('stxt');
-    if(t)t.className='tgl '+(S.statusOn?'on':'');
-    if(tx){tx.textContent=S.statusOn?'متاح':'محجوز';tx.className='tgl-lbl '+(S.statusOn?'tav':'trs');}
-    const sb=document.getElementById('save-btn');if(sb)sb.textContent='💾 حفظ التعديلات';
+    const ff = document.getElementById('f-floor'); if (ff) ff.value = u.floor;
+    const fn = document.getElementById('f-num'); if (fn) fn.value = u.number;
+    const ft = document.getElementById('f-type'); if (ft) ft.value = u.type;
+    const fsl = document.getElementById('f-sl'); if (fsl) fsl.value = u.shopLength;
+    const fsw = document.getElementById('f-sw'); if (fsw) fsw.value = u.shopWidth;
+    const frl = document.getElementById('f-rl'); if (frl) frl.value = u.serviceLength;
+    const frw = document.getElementById('f-rw'); if (frw) frw.value = u.serviceWidth;
+    const fno = document.getElementById('f-notes'); if (fno) fno.value = u.notes || '';
+    S.statusOn = u.status === 'available';
+    const t = document.getElementById('stgl'), tx = document.getElementById('stxt');
+    if (t) t.className = 'tgl ' + (S.statusOn ? 'on' : '');
+    if (tx) { tx.textContent = S.statusOn ? 'متاح' : 'محجوز'; tx.className = 'tgl-lbl ' + (S.statusOn ? 'tav' : 'trs'); }
+    const sb = document.getElementById('save-btn'); if (sb) sb.textContent = '💾 حفظ التعديلات';
     calcAll();
-  },50);
+  }, 50);
 }
-async function delUnit(id){
-  if(!confirm('حذف هذه الوحدة نهائياً؟'))return;
-  S.units=S.units.filter(u=>u.id!==id);delete S.images[id];
-  const ok=await saveData();
-  if(ok){await loadData();toast('تم الحذف','ok');renderAll();renderTbl();}
-  else {await loadData();toast('فشل الحذف','err');renderAll();renderTbl();}
+async function delUnit(id) {
+  if (!confirm('حذف هذه الوحدة نهائياً؟')) return;
+  S.units = S.units.filter(u => u.id !== id);
+  delete S.images[id];
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast('تم الحذف', 'ok');
+  } else {
+    await loadData();
+    toast('فشل الحذف، تم الاستعادة', 'err');
+  }
+  renderAll();
+  renderTbl();
+  renderRequests();
 }
-async function togStatus2(id){
-  const u=S.units.find(x=>x.id===id);if(!u)return;
-  u.status=u.status==='available'?'reserved':'available';u.updatedAt=new Date().toISOString();
-  const ok=await saveData();
-  if(ok){await loadData();renderAll();renderTbl();toast('تم تغيير الحالة','ok');}
-  else {await loadData();renderAll();renderTbl();toast('فشل التغيير','err');}
+async function togStatus2(id) {
+  const u = S.units.find(x => x.id === id);
+  if (!u) return;
+  u.status = u.status === 'available' ? 'reserved' : 'available';
+  u.updatedAt = new Date().toISOString();
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast('تم تغيير الحالة', 'ok');
+  } else {
+    await loadData();
+    toast('فشل التغيير، تم الاستعادة', 'err');
+  }
+  renderAll();
+  renderTbl();
+  renderRequests();
 }
 
-/* ═══ TABLE ═══ */
-function renderTbl(){
-  const s=(document.getElementById('ts')?.value||'').toLowerCase();
-  const bf=document.getElementById('tf-b')?.value||'';
-  const sf=document.getElementById('tf-s')?.value||'';
-  let u=S.units;
-  if(bf)u=u.filter(x=>x.block===bf);
-  if(sf)u=u.filter(x=>x.status===sf);
-  if(s)u=u.filter(x=>x.number.toLowerCase().includes(s)||(x.notes||'').toLowerCase().includes(s));
-  const tb=document.getElementById('ttbody');if(!tb)return;
-  tb.innerHTML=u.length?u.map(x=>`<tr>
+// --- Table ---
+function renderTbl() {
+  const s = (document.getElementById('ts')?.value || '').toLowerCase();
+  const bf = document.getElementById('tf-b')?.value || '';
+  const sf = document.getElementById('tf-s')?.value || '';
+  let u = S.units;
+  if (bf) u = u.filter(x => x.block === bf);
+  if (sf) u = u.filter(x => x.status === sf);
+  if (s) u = u.filter(x => x.number.toLowerCase().includes(s) || (x.notes || '').toLowerCase().includes(s));
+  const tb = document.getElementById('ttbody'); if (!tb) return;
+  tb.innerHTML = u.length ? u.map(x => `<tr>
     <td style="font-weight:700;color:var(--gold)">${x.number}</td>
     <td>${x.block}</td><td>${x.floor}</td>
-    <td>${x.type==='shop'?'محل':'مكتب'}</td>
+    <td>${x.type === 'shop' ? 'محل' : 'مكتب'}</td>
     <td>${x.totalArea} م²</td>
-    <td><span class="tbadge ${x.status==='available'?'ba':'br'}">${x.status==='available'?'متاح':'محجوز'}</span></td>
+    <td><span class="tbadge ${x.status === 'available' ? 'ba' : 'br'}">${x.status === 'available' ? 'متاح' : 'محجوز'}</span></td>
+    <td>${(x.requests && x.requests.length) ? `<span style="color:var(--gold)">${x.requests.length}</span>` : '—'}</td>
     <td>
       <button class="tbb" onclick="togStatus2('${x.id}')">تبديل</button>
       <button class="tbb" onclick="editUnit('${x.id}')">تعديل</button>
       <button class="tbb dl" onclick="delUnit('${x.id}')">حذف</button>
-    </td></tr>`).join('')
-  :'<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-3)">لا توجد وحدات</td></tr>';
+    </td>
+  </tr>`).join('')
+  : '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-3)">لا توجد وحدات</td></tr>';
 }
 
-/* ═══ REQUESTS MANAGEMENT ═══ */
-function renderRequests(){
-  const container=document.getElementById('requests-list');
-  if(!container) return;
-  const pending=S.requests.filter(r=>r.status==='pending');
-  const history=S.requests.filter(r=>r.status!=='pending');
-  let html='<div style="padding:10px 14px;border-bottom:1px solid var(--bd);font-weight:700;color:var(--gold)">📋 طلبات الحجز الجديدة</div>';
-  if(pending.length){
-    html+=`<table class="tt"><thead><tr>
-      <th>الوحدة</th><th>الاسم</th><th>الهاتف</th><th>التاريخ</th><th>ملاحظات</th><th>إجراءات</th>
-    </tr></thead><tbody>`;
-    pending.forEach(r=>{
-      html+=`<tr>
-        <td style="color:var(--gold);font-weight:700">${r.unitNumber}</td>
-        <td>${r.name}</td>
-        <td>${r.phone}</td>
-        <td>${new Date(r.createdAt).toLocaleDateString('ar')}</td>
-        <td style="max-width:100px;font-size:11px">${r.notes||'—'}</td>
-        <td>
-          <button class="tbb" onclick="handleRequest('${r.id}','accept')" style="color:var(--green);border-color:var(--green)">قبول</button>
-          <button class="tbb" onclick="handleRequest('${r.id}','reject')" style="color:var(--red);border-color:var(--red)">رفض</button>
-        </td>
-      </tr>`;
-    });
-    html+=`</tbody></table>`;
-  }else{
-    html+=`<div style="padding:20px;text-align:center;color:var(--text-3)">لا توجد طلبات جديدة</div>`;
-  }
-  if(history.length){
-    html+=`<div style="padding:10px 14px;border-top:1px solid var(--bd);font-weight:700;color:var(--text-2);margin-top:10px">📜 سجل الطلبات</div>`;
-    html+=`<table class="tt"><thead><tr>
-      <th>الوحدة</th><th>الاسم</th><th>الحالة</th><th>التاريخ</th>
-    </tr></thead><tbody>`;
-    history.slice(0,20).forEach(r=>{
-      const statusLabel=r.status==='accepted'?'✅ مقبول':'❌ مرفوض';
-      html+=`<tr>
-        <td>${r.unitNumber}</td>
-        <td>${r.name}</td>
-        <td><span class="tbadge ${r.status==='accepted'?'ba':'br'}">${statusLabel}</span></td>
-        <td>${new Date(r.createdAt).toLocaleDateString('ar')}</td>
-      </tr>`;
-    });
-    html+=`</tbody></table>`;
-    if(history.length>20) html+=`<div style="padding:8px;text-align:center;color:var(--text-3);font-size:11px">... و${history.length-20} أخرى</div>`;
-  }
-  container.innerHTML=html;
-}
-
-async function handleRequest(reqId, action){
-  const req=S.requests.find(r=>r.id===reqId);
-  if(!req) return;
-  if(action==='accept'){
-    // Change unit status to reserved
-    const unit=S.units.find(u=>u.id===req.unitId);
-    if(unit){
-      unit.status='reserved';
-      unit.updatedAt=new Date().toISOString();
+// --- Requests tab ---
+function renderRequests() {
+  const container = document.getElementById('requests-container');
+  if (!container) return;
+  // جمع كل الطلبات من جميع الوحدات
+  let allRequests = [];
+  S.units.forEach(u => {
+    if (u.requests && u.requests.length) {
+      u.requests.forEach(r => {
+        allRequests.push({ ...r, unitNumber: u.number, unitId: u.id });
+      });
     }
-    req.status='accepted';
-    toast(`تم قبول طلب الوحدة ${req.unitNumber}`,'ok');
-  }else{
-    req.status='rejected';
-    toast(`تم رفض طلب الوحدة ${req.unitNumber}`,'ok');
+  });
+  allRequests.sort((a, b) => new Date(b.date) - new Date(a.date));
+  if (!allRequests.length) {
+    container.innerHTML = '<div class="empty-msg" style="padding:30px"><div>📭</div>لا توجد طلبات حجز بعد</div>';
+    return;
   }
-  const ok=await saveData();
-  if(ok){await loadData();renderAll();renderTbl();renderRequests();}
-  else {await loadData();toast('فشل تحديث الطلب','err');}
+  container.innerHTML = allRequests.map(r => `
+    <div class="req-item">
+      <div>
+        <span class="req-name">${r.name}</span>
+        <span class="req-phone">📞 ${r.phone}</span>
+        <span class="req-date">${new Date(r.date).toLocaleString('ar')}</span>
+      </div>
+      <div class="req-unit">الوحدة: <strong>${r.unitNumber}</strong>  ·  الحالة: ${r.status === 'pending' ? '⏳ قيد الانتظار' : r.status === 'confirmed' ? '✅ مؤكد' : '❌ مرفوض'}</div>
+      <div class="req-actions">
+        ${r.status === 'pending' ? `
+          <button class="btn-p" style="padding:3px 12px;font-size:11px" onclick="confirmRequest('${r.unitId}','${r.date}')">تأكيد الحجز</button>
+          <button class="btn-d" style="padding:3px 12px;font-size:11px" onclick="rejectRequest('${r.unitId}','${r.date}')">رفض</button>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
 }
 
-/* ═══ DASHBOARD ═══ */
-function renderDash(){
-  const u=S.units,tot=u.length,av=u.filter(x=>x.status==='available').length,rs=tot-av;
-  const byB=['A','B'].map(b=>{const bu=u.filter(x=>x.block===b);return{b,t:bu.length,a:bu.filter(x=>x.status==='available').length,r:bu.filter(x=>x.status==='reserved').length};});
-  const flM={};u.forEach(x=>{const k=x.block+x.floor;if(!flM[k])flM[k]={b:x.block,f:x.floor,a:0,r:0};if(x.status==='available')flM[k].a++;else flM[k].r++;});
-  const flD=Object.values(flM).sort((a,b)=>{if(a.b!==b.b)return a.b<b.b?-1:1;const o=['قبو','أرضي','1','2','3','4','5','6'];return o.indexOf(a.f)-o.indexOf(b.f);});
-  const p=tot?av/tot:0,r=38,cx=46,cy=46,ci=2*Math.PI*r;
-  const pendingReqs=S.requests.filter(r=>r.status==='pending').length;
-  const dc=document.getElementById('dash-c');if(!dc)return;
-  dc.innerHTML=`
+async function confirmRequest(unitId, date) {
+  const u = S.units.find(x => x.id === unitId);
+  if (!u) return;
+  const req = u.requests.find(r => r.date === date);
+  if (!req) return;
+  req.status = 'confirmed';
+  // تحويل الوحدة إلى محجوزة تلقائياً
+  u.status = 'reserved';
+  u.updatedAt = new Date().toISOString();
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast('تم تأكيد الحجز وتحويل الوحدة إلى محجوزة', 'ok');
+    renderRequests();
+    renderAll();
+    renderTbl();
+  } else {
+    await loadData();
+    toast('فشل التأكيد', 'err');
+  }
+}
+
+async function rejectRequest(unitId, date) {
+  const u = S.units.find(x => x.id === unitId);
+  if (!u) return;
+  const req = u.requests.find(r => r.date === date);
+  if (!req) return;
+  req.status = 'rejected';
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast('تم رفض الطلب', 'ok');
+    renderRequests();
+  } else {
+    await loadData();
+    toast('فشل الرفض', 'err');
+  }
+}
+
+// --- Dashboard ---
+function renderDash() {
+  const u = S.units, tot = u.length, av = u.filter(x => x.status === 'available').length, rs = tot - av;
+  const byB = ['A','B'].map(b => { const bu = u.filter(x => x.block === b); return { b, t: bu.length, a: bu.filter(x => x.status === 'available').length, r: bu.filter(x => x.status === 'reserved').length }; });
+  const flM = {};
+  u.forEach(x => { const k = x.block + x.floor; if (!flM[k]) flM[k] = { b: x.block, f: x.floor, a: 0, r: 0 }; if (x.status === 'available') flM[k].a++; else flM[k].r++; });
+  const flD = Object.values(flM).sort((a,b) => { if (a.b !== b.b) return a.b < b.b ? -1 : 1; const o = ['قبو','أرضي','1','2','3','4','5','6']; return o.indexOf(a.f) - o.indexOf(b.f); });
+  const p = tot ? av/tot : 0, r = 38, cx = 46, cy = 46, ci = 2 * Math.PI * r;
+  const dc = document.getElementById('dash-c'); if (!dc) return;
+  dc.innerHTML = `
   <div class="kpi-r">
     <div class="kpi-b"><div class="kv">${tot}</div><div class="kl">إجمالي</div></div>
     <div class="kpi-b"><div class="kv" style="color:var(--green)">${av}</div><div class="kl">متاحة</div></div>
     <div class="kpi-b"><div class="kv" style="color:var(--red)">${rs}</div><div class="kl">محجوزة</div></div>
-    <div class="kpi-b"><div class="kv">${tot?Math.round(rs/tot*100):0}%</div><div class="kl">نسبة الإشغال</div></div>
-    <div class="kpi-b"><div class="kv" style="color:var(--gold)">${pendingReqs}</div><div class="kl">طلبات معلقة</div></div>
+    <div class="kpi-b"><div class="kv">${tot ? Math.round(rs/tot*100) : 0}%</div><div class="kl">نسبة الإشغال</div></div>
   </div>
   <div class="dash-charts">
     <div class="dcc">
@@ -1212,7 +1376,7 @@ function renderDash(){
           <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--green)" stroke-width="13"
             stroke-dasharray="${(ci*p).toFixed(1)} ${(ci*(1-p)).toFixed(1)}"
             stroke-dashoffset="${(ci*.25).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
-          <text x="${cx}" y="${cy-3}" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700" font-family="Tajawal">${tot?Math.round(av/tot*100):0}%</text>
+          <text x="${cx}" y="${cy-3}" text-anchor="middle" fill="var(--gold)" font-size="13" font-weight="700" font-family="Tajawal">${tot ? Math.round(av/tot*100) : 0}%</text>
           <text x="${cx}" y="${cy+10}" text-anchor="middle" fill="var(--text-3)" font-size="8" font-family="Tajawal">متاح</text>
         </svg>
         <div class="dn-leg">
@@ -1223,245 +1387,192 @@ function renderDash(){
     </div>
     <div class="dcc">
       <h3>توزيع الكتل</h3>
-      ${byB.map(b=>`
+      ${byB.map(b => `
         <div style="margin-bottom:10px">
           <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px">الكتلة ${b.b} · ${b.t} وحدة</div>
           <div class="br-row"><span class="br-lbl" style="color:var(--green)">متاح ${b.a}</span>
-            <div class="br-track"><div class="br-fill" style="width:${b.t?b.a/b.t*100:0}%;background:var(--green)"></div></div></div>
+            <div class="br-track"><div class="br-fill" style="width:${b.t ? b.a/b.t*100 : 0}%;background:var(--green)"></div></div></div>
           <div class="br-row"><span class="br-lbl" style="color:var(--red)">محجوز ${b.r}</span>
-            <div class="br-track"><div class="br-fill" style="width:${b.t?b.r/b.t*100:0}%;background:var(--red)"></div></div></div>
+            <div class="br-track"><div class="br-fill" style="width:${b.t ? b.r/b.t*100 : 0}%;background:var(--red)"></div></div></div>
         </div>`).join('')}
     </div>
     <div class="dcc" style="grid-column:1/-1">
       <h3>الإشغال بالطابق</h3>
-      ${flD.map(f=>{const t=f.a+f.r,pc=t?f.r/t*100:0;return`
+      ${flD.map(f => { const t = f.a + f.r, pc = t ? f.r/t*100 : 0; return `
         <div class="br-row">
           <span class="br-lbl">${f.b}-${f.f}</span>
           <div class="br-track" style="height:12px"><div class="br-fill" style="width:${pc.toFixed(0)}%;background:var(--red)"></div></div>
           <span class="br-val">${f.r}/${t}</span>
-        </div>`;}).join('')}
+        </div>`; }).join('')}
     </div>
   </div>
   <button class="btn-s" onclick="window.print()">🖨️ طباعة</button>`;
 }
 
-/* ═══ IMPORT ═══ */
-function hndImp(e){const f=e.target.files[0];if(f)readCSV(f);}
-function readCSV(file){const rd=new FileReader();rd.onload=ev=>parseCSV(ev.target.result);rd.readAsText(file,'UTF-8');}
-function parseCSV(txt){
-  const lines=txt.trim().split('\n').map(l=>l.trim()).filter(Boolean);
-  if(lines.length<2){toast('الملف فارغ','err');return;}
-  const hdrs=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
-  S.importBuf=lines.slice(1).map((line,idx)=>{
-    const vals=line.split(',').map(v=>v.trim().replace(/"/g,''));
-    const r={};hdrs.forEach((h,i)=>r[h]=vals[i]||'');
-    const sl=parseFloat(r.shop_length)||0,sw=parseFloat(r.shop_width)||0;
-    const rl=parseFloat(r.service_length)||0,rw=parseFloat(r.service_width)||0;
-    const sa=parseFloat((sl*sw).toFixed(2)),sva=parseFloat((rl*rw).toFixed(2)),ta=parseFloat((sa+sva).toFixed(2));
-    const bl=(r.block||'').toUpperCase(),nm=r.number||(bl+'-'+idx);
-    return{id:bl+'-'+(r.floor||'')+'-'+nm+'-'+Date.now()+idx,block:bl,floor:r.floor||'أرضي',
-      number:nm,type:r.type||'shop',shopLength:sl,shopWidth:sw,serviceLength:rl,serviceWidth:rw,
-      shopArea:sa,svcArea:sva,totalArea:ta,
-      status:(r.status||'available').trim(),notes:r.notes||'',
-      createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
-  }).filter(r=>r.block&&r.number);
-  if(!S.importBuf.length){toast('لم يتم التعرف على وحدات','err');return;}
-  document.getElementById('icnt').textContent=S.importBuf.length+' وحدة جاهزة';
-  document.getElementById('iprev').innerHTML=`<div style="overflow-x:auto"><table class="ipt"><thead><tr>
+// --- Import ---
+function hndImp(e) { const f = e.target.files[0]; if (f) readCSV(f); }
+function readCSV(file) { const rd = new FileReader(); rd.onload = ev => parseCSV(ev.target.result); rd.readAsText(file, 'UTF-8'); }
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) { toast('الملف فارغ', 'err'); return; }
+  const hdrs = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+  S.importBuf = lines.slice(1).map((line, idx) => {
+    const vals = line.split(',').map(v => v.trim().replace(/"/g, ''));
+    const r = {}; hdrs.forEach((h, i) => r[h] = vals[i] || '');
+    const sl = parseFloat(r.shop_length) || 0, sw = parseFloat(r.shop_width) || 0;
+    const rl = parseFloat(r.service_length) || 0, rw = parseFloat(r.service_width) || 0;
+    const sa = parseFloat((sl * sw).toFixed(2)), sva = parseFloat((rl * rw).toFixed(2)), ta = parseFloat((sa + sva).toFixed(2));
+    const bl = (r.block || '').toUpperCase(), nm = r.number || (bl + '-' + idx);
+    return {
+      id: bl + '-' + (r.floor || '') + '-' + nm + '-' + Date.now() + idx,
+      block: bl, floor: r.floor || 'أرضي',
+      number: nm, type: r.type || 'shop',
+      shopLength: sl, shopWidth: sw,
+      serviceLength: rl, serviceWidth: rw,
+      shopArea: sa, svcArea: sva, totalArea: ta,
+      status: (r.status || 'available').trim(),
+      notes: r.notes || '',
+      requests: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+  }).filter(r => r.block && r.number);
+  if (!S.importBuf.length) { toast('لم يتم التعرف على وحدات', 'err'); return; }
+  document.getElementById('icnt').textContent = S.importBuf.length + ' وحدة جاهزة';
+  document.getElementById('iprev').innerHTML = `<div style="overflow-x:auto"><table class="ipt"><thead><tr>
     <th>الوحدة</th><th>الكتلة</th><th>الطابق</th><th>النوع</th><th>المساحة</th><th>الحالة</th>
-    </tr></thead><tbody>${S.importBuf.slice(0,8).map(u=>`<tr>
+    </tr></thead><tbody>${S.importBuf.slice(0,8).map(u => `<tr>
       <td style="color:var(--gold)">${u.number}</td><td>${u.block}</td><td>${u.floor}</td>
-      <td>${u.type==='shop'?'محل':'مكتب'}</td><td>${u.totalArea}م²</td>
-      <td><span class="tbadge ${u.status==='available'?'ba':'br'}">${u.status==='available'?'متاح':'محجوز'}</span></td>
+      <td>${u.type === 'shop' ? 'محل' : 'مكتب'}</td><td>${u.totalArea}م²</td>
+      <td><span class="tbadge ${u.status === 'available' ? 'ba' : 'br'}">${u.status === 'available' ? 'متاح' : 'محجوز'}</span></td>
     </tr>`).join('')}
-    ${S.importBuf.length>8?`<tr><td colspan="6" style="text-align:center;color:var(--text-3)">... و${S.importBuf.length-8} أخرى</td></tr>`:''}
+    ${S.importBuf.length > 8 ? `<tr><td colspan="6" style="text-align:center;color:var(--text-3)">... و${S.importBuf.length-8} أخرى</td></tr>` : ''}
     </tbody></table></div>`;
-  document.getElementById('iact').style.display='block';
+  document.getElementById('iact').style.display = 'block';
 }
-async function confirmImp(){
-  const ex=new Set(S.units.map(u=>u.block+'-'+u.floor+'-'+u.number));
-  let add=0,skip=0;
-  S.importBuf.forEach(u=>{const k=u.block+'-'+u.floor+'-'+u.number;if(ex.has(k)){skip++;return;}S.units.push(u);add++;});
-  const ok=await saveData();
-  if(ok){await loadData();toast(`استُورد ${add} · تجاهل ${skip} مكررة`,'ok');clearImp();renderAll();}
-  else {await loadData();toast('فشل الاستيراد','err');}
+async function confirmImp() {
+  const ex = new Set(S.units.map(u => u.block + '-' + u.floor + '-' + u.number));
+  let add = 0, skip = 0;
+  S.importBuf.forEach(u => { const k = u.block + '-' + u.floor + '-' + u.number; if (ex.has(k)) { skip++; return; } S.units.push(u); add++; });
+  const ok = await saveData();
+  if (ok) {
+    await loadData();
+    toast(`استُورد ${add} · تجاهل ${skip} مكررة`, 'ok');
+    clearImp(); renderAll(); renderTbl(); renderRequests();
+  } else {
+    await loadData();
+    toast('فشل الاستيراد', 'err');
+  }
 }
-function clearImp(){S.importBuf=[];const p=document.getElementById('iprev');if(p)p.innerHTML='';const a=document.getElementById('iact');if(a)a.style.display='none';const f=document.getElementById('ifile');if(f)f.value='';}
-function dlTpl(){
-  const csv=['block,floor,number,type,shop_length,shop_width,service_length,service_width,status,notes',
+function clearImp() { S.importBuf = []; const p = document.getElementById('iprev'); if (p) p.innerHTML = ''; const a = document.getElementById('iact'); if (a) a.style.display = 'none'; const f = document.getElementById('ifile'); if (f) f.value = ''; }
+function dlTpl() {
+  const csv = ['block,floor,number,type,shop_length,shop_width,service_length,service_width,status,notes',
     'A,أرضي,A-G-01,shop,8,5,3,2,available,',
     'A,1,A-1-01,office,7,4,2,2,available,',
     'B,أرضي,B-G-01,shop,9,6,3,2,reserved,تم الحجز'].join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download='albaik_template.csv';a.click();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'albaik_template.csv'; a.click();
 }
 
-/* ═══ SETTINGS ACTIONS ═══ */
-function saveConn(){
-  S.gistId=document.getElementById('s-gist')?.value.trim()||'';
-  S.token=document.getElementById('s-token')?.value.trim()||'';
-  localStorage.setItem('albaik_cfg',JSON.stringify({g:S.gistId,t:S.token,p:S.adminPass}));
-  toast('تم الحفظ، جارٍ التحميل...','ok');loadData();
+// --- Settings actions ---
+function saveConn() {
+  S.gistId = document.getElementById('s-gist')?.value.trim() || '';
+  S.token = document.getElementById('s-token')?.value.trim() || '';
+  localStorage.setItem('albaik_cfg', JSON.stringify({ g: S.gistId, t: S.token, p: S.adminPass }));
+  toast('تم الحفظ، جارٍ التحميل...', 'ok');
+  loadData();
 }
-async function testConn(){
-  const el=document.getElementById('conn-status');if(!el)return;
-  el.textContent='⏳ جارٍ الاختبار...';el.className='conn-note';
-  try{
-    const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{headers:S.token?{Authorization:`token ${S.token}`}:{}});
-    if(r.ok){el.textContent='✅ الاتصال يعمل بشكل صحيح';el.className='conn-note ok';}
-    else{el.textContent='❌ خطأ '+(r.status===401?'Token غير صحيح':r.status===404?'Gist ID غير موجود':r.status);el.className='conn-note err';}
-  }catch(e){el.textContent='❌ '+e.message;el.className='conn-note err';}
+async function testConn() {
+  const el = document.getElementById('conn-status'); if (!el) return;
+  el.textContent = '⏳ جارٍ الاختبار...'; el.className = 'conn-note';
+  try {
+    const r = await fetch(`https://api.github.com/gists/${S.gistId}`, { headers: S.token ? { Authorization: `token ${S.token}` } : {} });
+    if (r.ok) { el.textContent = '✅ الاتصال يعمل بشكل صحيح'; el.className = 'conn-note ok'; }
+    else { el.textContent = '❌ خطأ ' + (r.status === 401 ? 'Token غير صحيح' : r.status === 404 ? 'Gist ID غير موجود' : r.status); el.className = 'conn-note err'; }
+  } catch(e) { el.textContent = '❌ ' + e.message; el.className = 'conn-note err'; }
 }
-function changePass(){
-  const p1=document.getElementById('np1')?.value,p2=document.getElementById('np2')?.value;
-  if(!p1){toast('أدخل كلمة المرور','err');return;}
-  if(p1!==p2){toast('كلمتا المرور غير متطابقتين','err');return;}
-  S.adminPass=p1;localStorage.setItem('albaik_cfg',JSON.stringify({g:S.gistId,t:S.token,p:S.adminPass}));
-  const n1=document.getElementById('np1'),n2=document.getElementById('np2');
-  if(n1)n1.value='';if(n2)n2.value='';
-  toast('تم تغيير كلمة المرور ✓','ok');
+function changePass() {
+  const p1 = document.getElementById('np1')?.value, p2 = document.getElementById('np2')?.value;
+  if (!p1) { toast('أدخل كلمة المرور', 'err'); return; }
+  if (p1 !== p2) { toast('كلمتا المرور غير متطابقتين', 'err'); return; }
+  S.adminPass = p1;
+  localStorage.setItem('albaik_cfg', JSON.stringify({ g: S.gistId, t: S.token, p: S.adminPass }));
+  document.getElementById('np1').value = ''; document.getElementById('np2').value = '';
+  toast('تم تغيير كلمة المرور ✓', 'ok');
 }
-function exportJSON(){
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify({units:S.units,images:S.images,gallery:S.gallery,requests:S.requests},null,2)],{type:'application/json'}));
-  a.download='albaik_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ units: S.units, images: S.images, gallery: S.gallery }, null, 2)], { type: 'application/json' }));
+  a.download = 'albaik_backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
 }
-function clearAll(){
-  if(!confirm('سيتم حذف جميع البيانات نهائياً. متأكد؟'))return;
-  S.units=[];S.images={};S.gallery=[];S.requests=[];
-  saveData();loadData();renderAll();toast('تم المسح','ok');
-}
-
-/* ═══ CALCULATOR BAR ═══ */
-let calcActive=false;
-function applyCalc(){
-  const meter=parseFloat(document.getElementById('cb-meter')?.value)||0;
-  const disc=parseFloat(document.getElementById('cb-disc')?.value)||0;
-  if(meter>0){
-    calcActive=true;
-    _applyToCards(meter,disc);
-  } else {
-    clearCalcDisplay();
-  }
-}
-function _applyToCards(meterPrice,discPct){
-  const dc=Math.min(Math.max(discPct||0,0),100);
-  document.querySelectorAll('.uc').forEach(card=>{
-    const id=card.getAttribute('data-id');
-    const u=id?S.units.find(x=>x.id===id):null;
-    if(!u) return;
-    const basePrice=meterPrice*u.totalArea;
-    const finalPrice=Math.round(basePrice*(1-dc/100));
-    const saving=basePrice-finalPrice;
-    let priceEl=card.querySelector('.uc-price');
-    let discEl=card.querySelector('.uc-disc');
-    if(!priceEl){priceEl=document.createElement('div');priceEl.className='uc-price';card.appendChild(priceEl);}
-    if(!discEl){discEl=document.createElement('div');discEl.className='uc-disc';card.appendChild(discEl);}
-    priceEl.textContent='$'+finalPrice.toLocaleString();
-    priceEl.classList.add('show');
-    if(dc>0&&saving>0){
-      discEl.textContent=`خصم ${dc}% · وفّرت $${saving.toLocaleString()}`;
-      discEl.classList.add('show');
-    } else {
-      discEl.classList.remove('show');
-    }
-  });
-  const hint=document.getElementById('cb-hint');
-  if(hint){
-    const discLabel=dc>0?` · خصم ${dc}%`:'';
-    hint.textContent=`سعر المتر $${meterPrice}${discLabel} — يتم عرض الأسعار على جميع الوحدات`;
-    hint.className='cb-hint active';
-  }
-}
-function clearCalcDisplay(){
-  calcActive=false;
-  document.querySelectorAll('.uc-price,.uc-disc').forEach(el=>el.classList.remove('show'));
-  const hint=document.getElementById('cb-hint');
-  if(hint){hint.textContent='';hint.className='cb-hint';}
-}
-function clearCalc(){
-  const el1=document.getElementById('cb-meter');
-  const el2=document.getElementById('cb-disc');
-  if(el1)el1.value='';
-  if(el2)el2.value='';
-  clearCalcDisplay();
+async function clearAll() {
+  if (!confirm('سيتم حذف جميع البيانات نهائياً. متأكد؟')) return;
+  S.units = []; S.images = {}; S.gallery = [];
+  const ok = await saveData();
+  if (ok) { await loadData(); toast('تم المسح', 'ok'); renderAll(); renderTbl(); renderRequests(); }
+  else { toast('فشل المسح', 'err'); }
 }
 
-/* ═══ GALLERY ═══ */
-function renderGallery(){
-  const sec=document.getElementById('gallery-section');
-  const grid=document.getElementById('gallery-grid');
-  if(!sec||!grid) return;
-  if(!S.gallery||S.gallery.length===0){sec.style.display='none';return;}
-  sec.style.display='block';
-  grid.innerHTML=S.gallery.map((src,i)=>`
+// --- Gallery ---
+function renderGallery() {
+  const sec = document.getElementById('gallery-section');
+  const grid = document.getElementById('gallery-grid');
+  if (!sec || !grid) return;
+  if (!S.gallery || S.gallery.length === 0) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  grid.innerHTML = S.gallery.map((src, i) => `
     <div class="gal-item" onclick="openLB(${i})">
       <img src="${src}" alt="صورة المجمع ${i+1}" loading="lazy">
       <div class="gal-overlay"><span>🔍</span></div>
     </div>`).join('');
 }
-function renderGalleryAdmin(){
-  const grid=document.getElementById('gal-admin-grid');if(!grid)return;
-  if(!S.gallery||S.gallery.length===0){
-    grid.innerHTML='<div style="color:var(--text-3);font-size:12px">لا توجد صور بعد</div>';return;
-  }
-  grid.innerHTML=S.gallery.map((src,i)=>`
+function renderGalleryAdmin() {
+  const grid = document.getElementById('gal-admin-grid'); if (!grid) return;
+  if (!S.gallery || S.gallery.length === 0) { grid.innerHTML = '<div style="color:var(--text-3);font-size:12px">لا توجد صور بعد</div>'; return; }
+  grid.innerHTML = S.gallery.map((src, i) => `
     <div class="gal-admin-item">
       <img src="${src}" alt="صورة ${i+1}">
       <button class="gal-del" onclick="delGalleryImg(${i})" title="حذف">✕</button>
     </div>`).join('');
 }
-function addGalleryImgs(e){
-  const files=Array.from(e.target.files);
-  let loaded=0;
-  files.forEach(f=>{
-    const rd=new FileReader();
-    rd.onload=ev=>{
+function addGalleryImgs(e) {
+  const files = Array.from(e.target.files);
+  let loaded = 0;
+  files.forEach(f => {
+    const rd = new FileReader();
+    rd.onload = ev => {
       S.gallery.push(ev.target.result);
       loaded++;
-      if(loaded===files.length) renderGalleryAdmin();
+      if (loaded === files.length) renderGalleryAdmin();
     };
     rd.readAsDataURL(f);
   });
 }
-function delGalleryImg(i){
-  S.gallery.splice(i,1);
-  renderGalleryAdmin();
-  renderGallery();
-}
-async function saveGallery(){
-  const ok=await saveData();
-  if(ok){await loadData();toast('تم حفظ الصور ✓','ok');renderGallery();}
-  else {await loadData();toast('فشل حفظ الصور','err');}
+function delGalleryImg(i) { S.gallery.splice(i, 1); renderGalleryAdmin(); renderGallery(); }
+async function saveGallery() {
+  const ok = await saveData();
+  if (ok) { await loadData(); toast('تم حفظ الصور ✓', 'ok'); renderGallery(); }
+  else { toast('فشل حفظ الصور', 'err'); }
 }
 
-/* ═══ LIGHTBOX ═══ */
-let lbIdx=0;
-function openLB(i){
-  lbIdx=i;
-  document.getElementById('lb-img').src=S.gallery[i];
-  document.getElementById('lightbox').classList.add('open');
-  document.getElementById('lb-prev').style.display=S.gallery.length>1?'flex':'none';
-  document.getElementById('lb-next').style.display=S.gallery.length>1?'flex':'none';
-}
-function lbNav(dir){
-  lbIdx=(lbIdx+dir+S.gallery.length)%S.gallery.length;
-  document.getElementById('lb-img').src=S.gallery[lbIdx];
-}
-function closeLB(){document.getElementById('lightbox').classList.remove('open');}
-document.addEventListener('keydown',e=>{
-  if(!document.getElementById('lightbox').classList.contains('open'))return;
-  if(e.key==='ArrowRight')lbNav(1);
-  if(e.key==='ArrowLeft')lbNav(-1);
-  if(e.key==='Escape')closeLB();
+// --- Lightbox ---
+let lbIdx = 0;
+function openLB(i) { lbIdx = i; document.getElementById('lb-img').src = S.gallery[i]; document.getElementById('lightbox').classList.add('open'); document.getElementById('lb-prev').style.display = S.gallery.length > 1 ? 'flex' : 'none'; document.getElementById('lb-next').style.display = S.gallery.length > 1 ? 'flex' : 'none'; }
+function lbNav(dir) { lbIdx = (lbIdx + dir + S.gallery.length) % S.gallery.length; document.getElementById('lb-img').src = S.gallery[lbIdx]; }
+function closeLB() { document.getElementById('lightbox').classList.remove('open'); }
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'Escape') closeLB();
 });
 
-/* ═══ TOAST ═══ */
-function toast(msg,type='ok'){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.className='show '+type;
-  clearTimeout(el._t);el._t=setTimeout(()=>el.className='',3200);
+// --- Toast ---
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show ' + type;
+  clearTimeout(el._t); el._t = setTimeout(() => el.className = '', 3200);
 }
 </script>
 </body>
