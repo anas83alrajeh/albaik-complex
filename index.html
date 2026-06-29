@@ -600,8 +600,9 @@ function renderUGrid(){
 
 /* ═══ MAP ═══ */
 function renderMap(){
+  const wrap=document.getElementById('bmap');if(!wrap)return;
   const floors=['6','5','4','3','2','1','أرضي','قبو'];
-  let h='<div class="bmap">';
+  let h='';
   ['A','B'].forEach(bl=>{
     h+=`<div class="bcol"><div class="bch">الكتلة ${bl}</div>`;
     floors.forEach(fl=>{
@@ -614,10 +615,7 @@ function renderMap(){
     });
     h+='</div>';
   });
-  h+='</div>';
-  document.getElementById('bmap').parentElement.innerHTML='<div class="bmap">'+h.slice(h.indexOf('<div class="bcol">'));
-  document.getElementById('bmap')&&(document.getElementById('bmap').innerHTML='');
-  document.querySelector('.map-outer').innerHTML=h;
+  wrap.innerHTML=h;
 }
 
 /* ═══ UNIT DETAIL ═══ */
@@ -677,10 +675,13 @@ function closeMod(e){if(e&&e.target!==document.getElementById('ov'))return;docum
 function openSettings(){
   document.getElementById('mc').innerHTML=buildSettingsHTML();
   document.getElementById('ov').classList.add('open');
-  // restore values
-  const sg=document.getElementById('s-gist'),st=document.getElementById('s-token');
-  if(sg)sg.value=S.gistId;if(st)st.value=S.token;
-  if(S.setUnlocked) showSetContent();
+  setTimeout(()=>{
+    const sg=document.getElementById('s-gist');
+    const st=document.getElementById('s-token');
+    if(sg){sg.value=S.gistId;sg.style.direction='ltr';sg.style.textAlign='left';}
+    if(st){st.value=S.token;st.style.direction='ltr';st.style.textAlign='left';}
+    if(S.setUnlocked) showSetContent();
+  },30);
 }
 function buildSettingsHTML(){
   return `
@@ -728,8 +729,8 @@ function buildSettingsHTML(){
       <div class="fc">
         <h3>🔗 إعداد الاتصال</h3>
         <div class="fg" style="margin-bottom:12px">
-          <div class="ff"><label>Gist ID</label><input type="text" id="s-gist" placeholder="abc123..."></div>
-          <div class="ff"><label>GitHub Token</label><input type="password" id="s-token" placeholder="ghp_...">
+          <div class="ff"><label>Gist ID</label><input type="text" id="s-gist" placeholder="abc123..." style="direction:ltr;text-align:left"></div>
+          <div class="ff"><label>GitHub Token</label><input type="password" id="s-token" placeholder="ghp_..." style="direction:ltr;text-align:left">
             <span class="conn-note">محفوظ محلياً في متصفحك فقط</span></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
