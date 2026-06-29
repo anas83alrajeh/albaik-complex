@@ -176,7 +176,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .calc-result .lbl{font-size:12px;color:var(--text-2)}
 .calc-result .price{font-size:22px;font-weight:700;color:var(--gold)}
 .calc-saving{font-size:11px;color:var(--green);margin-top:6px;min-height:16px;text-align:center}
-.dm-btns{display:flex;gap:9px;margin-top:14px}
+.dm-btns{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
 .dm-btns .b-close{flex:1;padding:10px;border-radius:var(--r);border:1px solid var(--bd2);
   background:none;color:var(--text-2);font-size:13px;transition:all .15s}
 .dm-btns .b-close:hover{border-color:var(--gold);color:var(--gold)}
@@ -187,9 +187,9 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 
 /* ═══ SETTINGS MODAL ═══ */
 .sm-tabs{display:flex;gap:4px;background:var(--navy);padding:4px;
-  border-radius:var(--r);border:1px solid var(--bd);margin-bottom:18px}
-.sm-tab{flex:1;padding:7px;border-radius:7px;border:none;background:none;
-  color:var(--text-2);font-size:12px;font-weight:500;transition:all .2s}
+  border-radius:var(--r);border:1px solid var(--bd);margin-bottom:18px;flex-wrap:wrap}
+.sm-tab{flex:1;padding:7px 6px;border-radius:7px;border:none;background:none;
+  color:var(--text-2);font-size:12px;font-weight:500;transition:all .2s;min-width:60px}
 .sm-tab.active{background:var(--gold);color:var(--navy);font-weight:700}
 .sm-page{display:none}.sm-page.active{display:block}
 .fc{background:var(--navy);border:1px solid var(--bd);border-radius:var(--r);
@@ -225,7 +225,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .uz .zi{font-size:24px;display:block;margin-bottom:5px;opacity:.5}
 .up-prev{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .pt{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid var(--bd)}
-.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;flex-wrap:wrap}
 .btn-p{padding:9px 22px;border-radius:var(--r);background:var(--gold);
   color:var(--navy);border:none;font-size:13px;font-weight:700;transition:background .15s}
 .btn-p:hover{background:var(--gold-l)}
@@ -300,7 +300,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .conn-note{font-size:11px;color:var(--text-3);margin-top:4px}
 .conn-note.ok{color:var(--green)}.conn-note.err{color:var(--red)}
 
-/* ── CALCULATOR BAR ── */
+/* CALCULATOR BAR */
 .calc-bar{
   background:var(--navy-2);border:1px solid var(--bd2);border-radius:var(--rl);
   padding:16px 20px;margin-bottom:20px;
@@ -319,16 +319,12 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 .cb-clear:hover{border-color:var(--red);color:var(--red)}
 .cb-hint{font-size:11px;color:var(--text-3);margin-top:8px;min-height:16px}
 .cb-hint.active{color:var(--gold)}
-/* price tag on unit cards when calc active */
-.uc-price{
-  font-size:12px;font-weight:700;margin-top:6px;
-  color:var(--gold);display:none
-}
+.uc-price{font-size:12px;font-weight:700;margin-top:6px;color:var(--gold);display:none}
 .uc-price.show{display:block}
 .uc-disc{font-size:10px;color:var(--green);margin-top:1px;display:none}
 .uc-disc.show{display:block}
 
-/* ── GALLERY ── */
+/* GALLERY */
 #gallery-section{background:var(--navy-2);border-top:1px solid var(--bd);margin-top:10px;padding:32px 0}
 .gallery-wrap{max-width:1200px;margin:0 auto;padding:0 20px}
 .gallery-header{margin-bottom:20px}
@@ -347,8 +343,6 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   justify-content:center;opacity:0;background:rgba(0,0,0,.4);transition:opacity .2s}
 .gal-item:hover .gal-overlay{opacity:1}
 .gal-overlay span{font-size:24px}
-
-/* admin gallery grid */
 .gal-admin-grid{display:flex;gap:8px;flex-wrap:wrap}
 .gal-admin-item{position:relative;width:72px;height:72px}
 .gal-admin-item img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid var(--bd)}
@@ -358,7 +352,7 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   cursor:pointer;line-height:1;padding:0}
 .gal-del:hover{background:#c03030}
 
-/* ── LIGHTBOX ── */
+/* LIGHTBOX */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);
   z-index:2000;align-items:center;justify-content:center}
 #lightbox.open{display:flex}
@@ -375,10 +369,16 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
   cursor:pointer;display:flex;align-items:center;justify-content:center}
 #lb-close:hover{background:rgba(255,255,255,.2)}
 
+/* REQUEST BADGE */
+.req-badge{background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;margin-right:5px}
+
 @media(max-width:640px){
   .cb-fields{flex-direction:column}
   .cb-sep{display:none}
   .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .fg{grid-template-columns:1fr}
+  .sm-tabs{flex-wrap:wrap}
+  .sm-tab{flex:1 0 auto;min-width:50px}
 }
 </style>
 </head>
@@ -491,7 +491,8 @@ button,input,select,textarea{font-family:inherit;cursor:pointer}
 /* ═══ STATE ═══ */
 const S={
   gistId:'',token:'',adminPass:'123456',
-  units:[],images:{},
+  units:[],images:{},gallery:[],
+  requests:[], // {id, unitId, unitNumber, name, phone, notes, createdAt, status:'pending'|'accepted'|'rejected'}
   block:'A',floor:'أرضي',
   view:'browse',
   statusOn:true,importBuf:[],
@@ -505,7 +506,6 @@ const FNAME='albaik_db.json';
   try{const c=JSON.parse(localStorage.getItem('albaik_cfg')||'{}');
     S.gistId=c.g||'';S.token=c.t||'';S.adminPass=c.p||'123456';}catch(e){}
   loadData();
-  // drag-drop
   setTimeout(()=>{
     const z=document.getElementById('idrop');if(!z)return;
     z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drag')});
@@ -526,31 +526,44 @@ function setView(v){
 
 /* ═══ GIST API ═══ */
 async function loadData(){
-  if(!S.gistId){renderAll();return;}
+  if(!S.gistId){renderAll();renderGallery();return;}
   try{
     const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{headers:S.token?{Authorization:`token ${S.token}`}:{}});
     if(!r.ok) throw new Error(r.status);
     const d=await r.json();const f=d.files[FNAME];
-    if(f&&f.content){const p=JSON.parse(f.content);S.units=p.units||[];S.images=p.images||{};}
-    setSyncTime();renderAll();toast('تم التحديث','ok');
+    if(f&&f.content){
+      const p=JSON.parse(f.content);
+      S.units=p.units||[];
+      S.images=p.images||{};
+      S.gallery=p.gallery||[];
+      S.requests=p.requests||[];
+    }else{
+      S.units=[];S.images={};S.gallery=[];S.requests=[];
+    }
+    setSyncTime();renderAll();renderGallery();toast('تم التحديث','ok');
   }catch(e){
-    if(String(e.message)==='404'){S.units=[];renderAll();}
+    if(String(e.message)==='404'){S.units=[];S.images={};S.gallery=[];S.requests=[];renderAll();renderGallery();}
     else if(String(e.message)!==''){toast('خطأ: '+e.message,'err');}
-    renderAll();
+    renderAll();renderGallery();
   }
 }
+
 async function saveData(){
   if(!S.gistId||!S.token){toast('أدخل Gist ID والـ Token في الإعدادات','err');return false;}
-  const content=JSON.stringify({units:S.units,images:S.images},null,2);
+  const content=JSON.stringify({units:S.units,images:S.images,gallery:S.gallery||[],requests:S.requests||[]},null,2);
   try{
     const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{
       method:'PATCH',headers:{Authorization:`token ${S.token}`,'Content-Type':'application/json'},
       body:JSON.stringify({files:{[FNAME]:{content}}}),
     });
-    if(!r.ok) throw new Error(r.status);
+    if(!r.ok){
+      const errMsg=await r.text();
+      throw new Error(`HTTP ${r.status}: ${errMsg}`);
+    }
     setSyncTime();return true;
-  }catch(e){toast('خطأ في الحفظ: '+e.message,'err');return false;}
+  }catch(e){toast('خطأ في الحفظ: '+e.message,'err');console.error(e);return false;}
 }
+
 function setSyncTime(){document.getElementById('sync-lbl').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar');}
 
 /* ═══ RENDER ALL ═══ */
@@ -559,11 +572,13 @@ function renderAll(){renderStats();renderFloorPills();renderUGrid();if(S.view===
 /* ═══ STATS ═══ */
 function renderStats(){
   const u=S.units,tot=u.length,av=u.filter(x=>x.status==='available').length,rs=tot-av;
+  const pendingReqs=S.requests.filter(r=>r.status==='pending').length;
   document.getElementById('stats-bar').innerHTML=`
     <div class="stat-pill"><div class="lbl">إجمالي الوحدات</div><div class="val">${tot}</div></div>
     <div class="stat-pill g"><div class="lbl">متاحة</div><div class="val">${av}</div></div>
     <div class="stat-pill r"><div class="lbl">محجوزة</div><div class="val">${rs}</div></div>
     <div class="stat-pill go"><div class="lbl">نسبة الإشغال</div><div class="val">${tot?Math.round(rs/tot*100):0}%</div></div>
+    <div class="stat-pill" style="border-color:var(--gold)"><div class="lbl">طلبات الحجز</div><div class="val" style="color:var(--gold)">${pendingReqs}</div></div>
   `;
 }
 
@@ -590,12 +605,20 @@ function renderUGrid(){
   if(!units.length){g.innerHTML='';e.style.display='block';return;}
   e.style.display='none';
   g.innerHTML=units.map(u=>`
-    <div class="uc ${u.status}" onclick="${u.status==='available'?`showDetail('${u.id}')`:''}" >
+    <div class="uc ${u.status}" data-id="${u.id}" onclick="${u.status==='available'?`showDetail('${u.id}')`:''}" >
       <span class="ubadge ${u.status==='available'?'ba':'br'}">${u.status==='available'?'متاح':'محجوز'}</span>
       <div class="uc-num">${u.number}</div>
       <div class="uc-type">${u.type==='shop'?'محل تجاري':'مكتب'}</div>
       <div class="uc-area">${u.totalArea} م²</div>
+      <div class="uc-price"></div>
+      <div class="uc-disc"></div>
     </div>`).join('');
+  // re-apply calculator if active
+  if(calcActive){
+    const meter=parseFloat(document.getElementById('cb-meter')?.value)||0;
+    const disc=parseFloat(document.getElementById('cb-disc')?.value)||0;
+    if(meter>0) _applyToCards(meter,disc);
+  }
 }
 
 /* ═══ MAP ═══ */
@@ -618,10 +641,12 @@ function renderMap(){
   wrap.innerHTML=h;
 }
 
-/* ═══ UNIT DETAIL ═══ */
+/* ═══ UNIT DETAIL + REQUEST FORM ═══ */
 function showDetail(id){
   const u=S.units.find(x=>x.id===id);if(!u)return;
   const imgs=S.images[id]||[];
+  // Check if this unit already has a pending request
+  const existingReq=S.requests.find(r=>r.unitId===id && r.status==='pending');
   document.getElementById('mc').innerHTML=`
     <div class="dm-head">
       <h2>وحدة ${u.number}</h2>
@@ -651,12 +676,14 @@ function showDetail(id){
       <div class="calc-saving" id="c-saving"></div>
     </div>
     ${u.notes?`<div style="font-size:12px;color:var(--text-3);margin-bottom:10px">📝 ${u.notes}</div>`:''}
+    ${existingReq ? `<div style="background:rgba(201,168,76,.15);padding:10px;border-radius:var(--r);margin:10px 0;text-align:center;color:var(--gold);font-size:13px">⏳ لديك طلب حجز قيد المراجعة لهذه الوحدة</div>` : ''}
     <div class="dm-btns">
       <button class="b-close" onclick="closeMod()">إغلاق</button>
-      <button class="b-req" onclick="reqUnit('${u.number}')">📞 طلب الحجز</button>
+      ${!existingReq ? `<button class="b-req" onclick="showRequestForm('${u.id}','${u.number}')">📞 طلب الحجز</button>` : `<button class="b-req" disabled style="opacity:0.6">تم الطلب مسبقاً</button>`}
     </div>`;
   document.getElementById('ov').classList.add('open');
 }
+
 function calcPrice(){
   const p=parseFloat(document.getElementById('c-price')?.value)||0;
   const d=parseFloat(document.getElementById('c-disc')?.value)||0;
@@ -666,11 +693,69 @@ function calcPrice(){
   document.getElementById('c-final').textContent='$'+fin.toLocaleString();
   document.getElementById('c-saving').textContent=dc>0&&p>0?`وفّرت $${sav.toLocaleString()} بخصم ${dc.toFixed(0)}%`:'';
 }
-function reqUnit(num){toast(`تم تسجيل طلبك للوحدة ${num}، سيتواصل معك الفريق قريباً`,'ok');closeMod();}
+
+/* ═══ REQUEST FORM (for client) ═══ */
+function showRequestForm(unitId, unitNumber){
+  // Build a simple form inside the modal
+  document.getElementById('mc').innerHTML=`
+    <div class="dm-head">
+      <h2>📋 طلب حجز الوحدة ${unitNumber}</h2>
+      <p>املأ البيانات التالية لإرسال طلب الحجز</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin:12px 0">
+      <div class="ff"><label>الاسم الكامل</label><input type="text" id="req-name" placeholder="أدخل اسمك"></div>
+      <div class="ff"><label>رقم الهاتف</label><input type="text" id="req-phone" placeholder="09xxxxxxxx"></div>
+      <div class="ff"><label>ملاحظات إضافية (اختياري)</label><textarea id="req-notes" rows="2" placeholder="أي تفاصيل إضافية..."></textarea></div>
+    </div>
+    <div class="dm-btns">
+      <button class="b-close" onclick="closeMod()">إلغاء</button>
+      <button class="b-req" onclick="submitRequest('${unitId}','${unitNumber}')">✅ إرسال الطلب</button>
+    </div>
+  `;
+}
+
+async function submitRequest(unitId, unitNumber){
+  const name=document.getElementById('req-name')?.value.trim();
+  const phone=document.getElementById('req-phone')?.value.trim();
+  const notes=document.getElementById('req-notes')?.value.trim()||'';
+  if(!name||!phone){
+    toast('يرجى ملء الاسم ورقم الهاتف','err');
+    return;
+  }
+  // Check if already pending
+  if(S.requests.some(r=>r.unitId===unitId && r.status==='pending')){
+    toast('لديك طلب مسبق لهذه الوحدة','err');
+    closeMod();
+    return;
+  }
+  const req={
+    id:'req-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),
+    unitId,
+    unitNumber,
+    name,
+    phone,
+    notes,
+    createdAt:new Date().toISOString(),
+    status:'pending' // pending, accepted, rejected
+  };
+  S.requests.push(req);
+  const ok=await saveData();
+  if(ok){
+    await loadData(); // refresh from Gist
+    toast(`تم إرسال طلب الحجز للوحدة ${unitNumber} بنجاح ✓`,`ok`);
+    closeMod();
+    renderAll();
+  }else{
+    // revert local change
+    S.requests=S.requests.filter(r=>r.id!==req.id);
+    toast('فشل إرسال الطلب، حاول مرة أخرى','err');
+  }
+}
+
 function closeMod(e){if(e&&e.target!==document.getElementById('ov'))return;document.getElementById('ov').classList.remove('open');}
 
 /* ═══════════════════════════════════════════════════
-   SETTINGS MODAL  (كلمة السر: 123456)
+   SETTINGS MODAL (كلمة السر: 123456)
 ═══════════════════════════════════════════════════ */
 function openSettings(){
   document.getElementById('mc').innerHTML=buildSettingsHTML();
@@ -683,6 +768,7 @@ function openSettings(){
     if(S.setUnlocked) showSetContent();
   },30);
 }
+
 function buildSettingsHTML(){
   return `
   <div style="margin-bottom:16px">
@@ -707,6 +793,7 @@ function buildSettingsHTML(){
       <button class="sm-tab active" id="smt-conn" onclick="smTab('conn')">الاتصال</button>
       <button class="sm-tab" id="smt-add"  onclick="smTab('add')">إضافة وحدة</button>
       <button class="sm-tab" id="smt-list" onclick="smTab('list')">الوحدات</button>
+      <button class="sm-tab" id="smt-requests" onclick="smTab('requests')">📋 الطلبات</button>
       <button class="sm-tab" id="smt-dash" onclick="smTab('dash')">إحصائيات</button>
       <button class="sm-tab" id="smt-imp"  onclick="smTab('imp')">استيراد</button>
       <button class="sm-tab" id="smt-gal"  onclick="smTab('gal')">معرض الصور</button>
@@ -817,6 +904,12 @@ function buildSettingsHTML(){
         </tr></thead><tbody id="ttbody"></tbody></table>
       </div>
     </div>
+    <!-- TAB: REQUESTS -->
+    <div class="sm-page" id="smp-requests">
+      <div class="tw" id="requests-container">
+        <div id="requests-list"></div>
+      </div>
+    </div>
     <!-- TAB: DASH -->
     <div class="sm-page" id="smp-dash">
       <div id="dash-c"></div>
@@ -874,23 +967,32 @@ function buildSettingsHTML(){
     </div>
   </div>`;
 }
+
 function chkSetPass(){
   const v=document.getElementById('s-pass-inp')?.value;
   if(v===S.adminPass){S.setUnlocked=true;showSetContent();}
   else toast('كلمة المرور غير صحيحة','err');
 }
+
 function showSetContent(){
   document.getElementById('s-gate').style.display='none';
   document.getElementById('s-content').style.display='block';
-  updFloors(); renderTbl(); renderDash();
+  updFloors(); renderTbl(); renderRequests(); renderDash();
 }
+
 function smTab(t){
   document.querySelectorAll('.sm-tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.sm-page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('smt-'+t).classList.add('active');
-  document.getElementById('smp-'+t).classList.add('active');
+  const tabMap={conn:'smt-conn',add:'smt-add',list:'smt-list',requests:'smt-requests',dash:'smt-dash',imp:'smt-imp',gal:'smt-gal'};
+  const pageMap={conn:'smp-conn',add:'smp-add',list:'smp-list',requests:'smp-requests',dash:'smp-dash',imp:'smp-imp',gal:'smp-gal'};
+  const tabEl=document.getElementById(tabMap[t]);
+  if(tabEl) tabEl.classList.add('active');
+  const pageEl=document.getElementById(pageMap[t]);
+  if(pageEl) pageEl.classList.add('active');
   if(t==='list') renderTbl();
+  if(t==='requests') renderRequests();
   if(t==='dash') renderDash();
+  if(t==='gal') renderGalleryAdmin();
 }
 
 /* ═══ ADMIN FORM ═══ */
@@ -916,7 +1018,6 @@ function resetForm(){
   ['f-num','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-sl','f-sw','f-rl','f-rw'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0;});
   const fi=document.getElementById('f-id');if(fi)fi.value='';
-  const ft=document.getElementById('form-ttl');if(ft)ft.textContent='إضافة وحدة جديدة';
   const sb=document.getElementById('save-btn');if(sb)sb.textContent='💾 حفظ الوحدة';
   S.statusOn=true;
   const t=document.getElementById('stgl'),tx=document.getElementById('stxt');
@@ -947,7 +1048,8 @@ async function saveUnit(){
   if(editId){const i=S.units.findIndex(u=>u.id===editId);if(i!==-1)S.units[i]=unit;}
   else S.units.push(unit);
   const ok=await saveData();
-  if(ok){toast(editId?'تم التحديث ✓':'تم الإضافة ✓','ok');resetForm();renderAll();renderTbl();}
+  if(ok){await loadData();toast(editId?'تم التحديث ✓':'تم الإضافة ✓','ok');resetForm();renderAll();renderTbl();}
+  else {await loadData();toast('فشل الحفظ، تم الاستعادة','err');renderAll();renderTbl();}
   if(btn){btn.disabled=false;btn.textContent='💾 حفظ الوحدة';}
 }
 function editUnit(id){
@@ -976,12 +1078,16 @@ function editUnit(id){
 async function delUnit(id){
   if(!confirm('حذف هذه الوحدة نهائياً؟'))return;
   S.units=S.units.filter(u=>u.id!==id);delete S.images[id];
-  const ok=await saveData();if(ok){toast('تم الحذف','ok');renderAll();renderTbl();}
+  const ok=await saveData();
+  if(ok){await loadData();toast('تم الحذف','ok');renderAll();renderTbl();}
+  else {await loadData();toast('فشل الحذف','err');renderAll();renderTbl();}
 }
 async function togStatus2(id){
   const u=S.units.find(x=>x.id===id);if(!u)return;
   u.status=u.status==='available'?'reserved':'available';u.updatedAt=new Date().toISOString();
-  const ok=await saveData();if(ok){renderAll();renderTbl();toast('تم تغيير الحالة','ok');}
+  const ok=await saveData();
+  if(ok){await loadData();renderAll();renderTbl();toast('تم تغيير الحالة','ok');}
+  else {await loadData();renderAll();renderTbl();toast('فشل التغيير','err');}
 }
 
 /* ═══ TABLE ═══ */
@@ -1008,6 +1114,75 @@ function renderTbl(){
   :'<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-3)">لا توجد وحدات</td></tr>';
 }
 
+/* ═══ REQUESTS MANAGEMENT ═══ */
+function renderRequests(){
+  const container=document.getElementById('requests-list');
+  if(!container) return;
+  const pending=S.requests.filter(r=>r.status==='pending');
+  const history=S.requests.filter(r=>r.status!=='pending');
+  let html='<div style="padding:10px 14px;border-bottom:1px solid var(--bd);font-weight:700;color:var(--gold)">📋 طلبات الحجز الجديدة</div>';
+  if(pending.length){
+    html+=`<table class="tt"><thead><tr>
+      <th>الوحدة</th><th>الاسم</th><th>الهاتف</th><th>التاريخ</th><th>ملاحظات</th><th>إجراءات</th>
+    </tr></thead><tbody>`;
+    pending.forEach(r=>{
+      html+=`<tr>
+        <td style="color:var(--gold);font-weight:700">${r.unitNumber}</td>
+        <td>${r.name}</td>
+        <td>${r.phone}</td>
+        <td>${new Date(r.createdAt).toLocaleDateString('ar')}</td>
+        <td style="max-width:100px;font-size:11px">${r.notes||'—'}</td>
+        <td>
+          <button class="tbb" onclick="handleRequest('${r.id}','accept')" style="color:var(--green);border-color:var(--green)">قبول</button>
+          <button class="tbb" onclick="handleRequest('${r.id}','reject')" style="color:var(--red);border-color:var(--red)">رفض</button>
+        </td>
+      </tr>`;
+    });
+    html+=`</tbody></table>`;
+  }else{
+    html+=`<div style="padding:20px;text-align:center;color:var(--text-3)">لا توجد طلبات جديدة</div>`;
+  }
+  if(history.length){
+    html+=`<div style="padding:10px 14px;border-top:1px solid var(--bd);font-weight:700;color:var(--text-2);margin-top:10px">📜 سجل الطلبات</div>`;
+    html+=`<table class="tt"><thead><tr>
+      <th>الوحدة</th><th>الاسم</th><th>الحالة</th><th>التاريخ</th>
+    </tr></thead><tbody>`;
+    history.slice(0,20).forEach(r=>{
+      const statusLabel=r.status==='accepted'?'✅ مقبول':'❌ مرفوض';
+      html+=`<tr>
+        <td>${r.unitNumber}</td>
+        <td>${r.name}</td>
+        <td><span class="tbadge ${r.status==='accepted'?'ba':'br'}">${statusLabel}</span></td>
+        <td>${new Date(r.createdAt).toLocaleDateString('ar')}</td>
+      </tr>`;
+    });
+    html+=`</tbody></table>`;
+    if(history.length>20) html+=`<div style="padding:8px;text-align:center;color:var(--text-3);font-size:11px">... و${history.length-20} أخرى</div>`;
+  }
+  container.innerHTML=html;
+}
+
+async function handleRequest(reqId, action){
+  const req=S.requests.find(r=>r.id===reqId);
+  if(!req) return;
+  if(action==='accept'){
+    // Change unit status to reserved
+    const unit=S.units.find(u=>u.id===req.unitId);
+    if(unit){
+      unit.status='reserved';
+      unit.updatedAt=new Date().toISOString();
+    }
+    req.status='accepted';
+    toast(`تم قبول طلب الوحدة ${req.unitNumber}`,'ok');
+  }else{
+    req.status='rejected';
+    toast(`تم رفض طلب الوحدة ${req.unitNumber}`,'ok');
+  }
+  const ok=await saveData();
+  if(ok){await loadData();renderAll();renderTbl();renderRequests();}
+  else {await loadData();toast('فشل تحديث الطلب','err');}
+}
+
 /* ═══ DASHBOARD ═══ */
 function renderDash(){
   const u=S.units,tot=u.length,av=u.filter(x=>x.status==='available').length,rs=tot-av;
@@ -1015,6 +1190,7 @@ function renderDash(){
   const flM={};u.forEach(x=>{const k=x.block+x.floor;if(!flM[k])flM[k]={b:x.block,f:x.floor,a:0,r:0};if(x.status==='available')flM[k].a++;else flM[k].r++;});
   const flD=Object.values(flM).sort((a,b)=>{if(a.b!==b.b)return a.b<b.b?-1:1;const o=['قبو','أرضي','1','2','3','4','5','6'];return o.indexOf(a.f)-o.indexOf(b.f);});
   const p=tot?av/tot:0,r=38,cx=46,cy=46,ci=2*Math.PI*r;
+  const pendingReqs=S.requests.filter(r=>r.status==='pending').length;
   const dc=document.getElementById('dash-c');if(!dc)return;
   dc.innerHTML=`
   <div class="kpi-r">
@@ -1022,6 +1198,7 @@ function renderDash(){
     <div class="kpi-b"><div class="kv" style="color:var(--green)">${av}</div><div class="kl">متاحة</div></div>
     <div class="kpi-b"><div class="kv" style="color:var(--red)">${rs}</div><div class="kl">محجوزة</div></div>
     <div class="kpi-b"><div class="kv">${tot?Math.round(rs/tot*100):0}%</div><div class="kl">نسبة الإشغال</div></div>
+    <div class="kpi-b"><div class="kv" style="color:var(--gold)">${pendingReqs}</div><div class="kl">طلبات معلقة</div></div>
   </div>
   <div class="dash-charts">
     <div class="dcc">
@@ -1105,7 +1282,9 @@ async function confirmImp(){
   const ex=new Set(S.units.map(u=>u.block+'-'+u.floor+'-'+u.number));
   let add=0,skip=0;
   S.importBuf.forEach(u=>{const k=u.block+'-'+u.floor+'-'+u.number;if(ex.has(k)){skip++;return;}S.units.push(u);add++;});
-  const ok=await saveData();if(ok){toast(`استُورد ${add} · تجاهل ${skip} مكررة`,'ok');clearImp();renderAll();}
+  const ok=await saveData();
+  if(ok){await loadData();toast(`استُورد ${add} · تجاهل ${skip} مكررة`,'ok');clearImp();renderAll();}
+  else {await loadData();toast('فشل الاستيراد','err');}
 }
 function clearImp(){S.importBuf=[];const p=document.getElementById('iprev');if(p)p.innerHTML='';const a=document.getElementById('iact');if(a)a.style.display='none';const f=document.getElementById('ifile');if(f)f.value='';}
 function dlTpl(){
@@ -1145,17 +1324,17 @@ function changePass(){
 }
 function exportJSON(){
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify({units:S.units,images:S.images},null,2)],{type:'application/json'}));
+  a.href=URL.createObjectURL(new Blob([JSON.stringify({units:S.units,images:S.images,gallery:S.gallery,requests:S.requests},null,2)],{type:'application/json'}));
   a.download='albaik_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();
 }
 function clearAll(){
   if(!confirm('سيتم حذف جميع البيانات نهائياً. متأكد؟'))return;
-  S.units=[];S.images={};saveData();renderAll();toast('تم المسح','ok');
+  S.units=[];S.images={};S.gallery=[];S.requests=[];
+  saveData();loadData();renderAll();toast('تم المسح','ok');
 }
 
 /* ═══ CALCULATOR BAR ═══ */
 let calcActive=false;
-
 function applyCalc(){
   const meter=parseFloat(document.getElementById('cb-meter')?.value)||0;
   const disc=parseFloat(document.getElementById('cb-disc')?.value)||0;
@@ -1166,7 +1345,6 @@ function applyCalc(){
     clearCalcDisplay();
   }
 }
-
 function _applyToCards(meterPrice,discPct){
   const dc=Math.min(Math.max(discPct||0,0),100);
   document.querySelectorAll('.uc').forEach(card=>{
@@ -1196,14 +1374,12 @@ function _applyToCards(meterPrice,discPct){
     hint.className='cb-hint active';
   }
 }
-
 function clearCalcDisplay(){
   calcActive=false;
   document.querySelectorAll('.uc-price,.uc-disc').forEach(el=>el.classList.remove('show'));
   const hint=document.getElementById('cb-hint');
   if(hint){hint.textContent='';hint.className='cb-hint';}
 }
-
 function clearCalc(){
   const el1=document.getElementById('cb-meter');
   const el2=document.getElementById('cb-disc');
@@ -1212,25 +1388,7 @@ function clearCalc(){
   clearCalcDisplay();
 }
 
-// Patch renderUGrid to add data-id and re-apply calc
-const _origRenderUGrid=renderUGrid;
-renderUGrid=function(){
-  _origRenderUGrid();
-  const units=S.units.filter(u=>u.block===S.block&&u.floor===S.floor);
-  document.querySelectorAll('.uc').forEach((card,i)=>{
-    if(units[i]) card.setAttribute('data-id',units[i].id);
-  });
-  if(calcActive){
-    const meter=parseFloat(document.getElementById('cb-meter')?.value)||0;
-    const disc=parseFloat(document.getElementById('cb-disc')?.value)||0;
-    if(meter>0) _applyToCards(meter,disc);
-  }
-};
-
 /* ═══ GALLERY ═══ */
-// Gallery images stored in S.gallery = []
-S.gallery=[];
-
 function renderGallery(){
   const sec=document.getElementById('gallery-section');
   const grid=document.getElementById('gallery-grid');
@@ -1243,7 +1401,6 @@ function renderGallery(){
       <div class="gal-overlay"><span>🔍</span></div>
     </div>`).join('');
 }
-
 function renderGalleryAdmin(){
   const grid=document.getElementById('gal-admin-grid');if(!grid)return;
   if(!S.gallery||S.gallery.length===0){
@@ -1255,7 +1412,6 @@ function renderGalleryAdmin(){
       <button class="gal-del" onclick="delGalleryImg(${i})" title="حذف">✕</button>
     </div>`).join('');
 }
-
 function addGalleryImgs(e){
   const files=Array.from(e.target.files);
   let loaded=0;
@@ -1269,59 +1425,16 @@ function addGalleryImgs(e){
     rd.readAsDataURL(f);
   });
 }
-
 function delGalleryImg(i){
   S.gallery.splice(i,1);
   renderGalleryAdmin();
   renderGallery();
 }
-
 async function saveGallery(){
   const ok=await saveData();
-  if(ok){toast('تم حفظ الصور ✓','ok');renderGallery();}
+  if(ok){await loadData();toast('تم حفظ الصور ✓','ok');renderGallery();}
+  else {await loadData();toast('فشل حفظ الصور','err');}
 }
-
-// Patch loadData to also restore gallery
-const _origLoadData=loadData;
-loadData=async function(){
-  if(!S.gistId){renderAll();renderGallery();return;}
-  try{
-    const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{headers:S.token?{Authorization:`token ${S.token}`}:{}});
-    if(!r.ok) throw new Error(r.status);
-    const d=await r.json();const f=d.files[FNAME];
-    if(f&&f.content){
-      const p=JSON.parse(f.content);
-      S.units=p.units||[];S.images=p.images||{};S.gallery=p.gallery||[];
-    }
-    setSyncTime();renderAll();renderGallery();toast('تم التحديث','ok');
-  }catch(e){
-    if(String(e.message)==='404'){S.units=[];S.gallery=[];renderAll();renderGallery();}
-    else if(String(e.message)!==''){toast('خطأ: '+e.message,'err');}
-    renderAll();renderGallery();
-  }
-};
-
-// Patch saveData to include gallery
-const _origSaveData=saveData;
-saveData=async function(){
-  if(!S.gistId||!S.token){toast('أدخل Gist ID والـ Token في الإعدادات','err');return false;}
-  const content=JSON.stringify({units:S.units,images:S.images,gallery:S.gallery||[]},null,2);
-  try{
-    const r=await fetch(`https://api.github.com/gists/${S.gistId}`,{
-      method:'PATCH',headers:{Authorization:`token ${S.token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({files:{[FNAME]:{content}}}),
-    });
-    if(!r.ok) throw new Error(r.status);
-    setSyncTime();return true;
-  }catch(e){toast('خطأ في الحفظ: '+e.message,'err');return false;}
-};
-
-// Patch smTab to render gallery admin when tab opened
-const _origSmTab=smTab;
-smTab=function(t){
-  _origSmTab(t);
-  if(t==='gal') renderGalleryAdmin();
-};
 
 /* ═══ LIGHTBOX ═══ */
 let lbIdx=0;
